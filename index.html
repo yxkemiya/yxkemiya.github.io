@@ -162,6 +162,90 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-kafka-retry-consumer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/21/kafka-retry-consumer/">Kafka重试机制实现</a>
+    </h1>
+  
+
+        
+        <a href="/2018/02/21/kafka-retry-consumer/" class="archive-article-date">
+  	<time datetime="2018-02-21T07:24:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>这篇文章主要是记录一下，在做头条的红包支付系统的过程中，用kafka做消息队列时，如何设计一个可以重试的消费机制</p>
+<p>这个方式已经在线上运行了很长的时间，但是后续总觉得这种实现方式不算很好，所以就在网上找到了一篇文章，也是介绍如何构造一个重试队列，而且正好跟我的想法相同，所以就打算把我自己的想法写下来</p>
+</blockquote>
+<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>今年春节的时候，今日头条旗下的产品进行了分别进行了抢红包、百万英雄等活动，用户在活动中获取到的钱能够体现到各自的银行卡中，其中有一个重要的环节就是如何知道用户在我们部门代付出去的钱是否已经成功或失败。在项目中，我们采用了 <strong>回调</strong> 的方式进行通知。即收到付款完成的回调通知后，我们会再通过回调的方式通知业务方，由于前期考虑到数据量会很大，特别是大年三十的时候回出现高峰期，所以在整个项目中使用了kafka作为消息队列来使用(其实从我的理解来看，kafka作为消息队列并不是一个完美的解决方案，但是考虑到公司内部kafka比较稳定，而且不想在项目中引入更多的依赖项目，所以选用了kafka)</p>
+<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在使用kafka的时候，由于我们需要通知业务方，所以考虑到业务方可能会出现大问题，所以我们暂定了一个规则，重试三次通知业务方，每次间隔十分钟，如果三次都失败则认为失败，中间任意一次成功都可以认为是成功。这个规则就引入了我们今天要讨论的问题，由于kafka不支持延迟消息，那么怎么保证能够做到间隔十分钟通知一次用户呢？</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="kafka简介"><a href="#kafka简介" class="headerlink" title="kafka简介"></a>kafka简介</h2><p>kafka是一个分布式流式平台，它通常被用作构建一个实时的数据流平台，但是得益于topic的持久化，它也被用作消息流存储来处理历史数据，为了改进kafka的扩展能力，kafka持久化一个topic的时候，会用一个或者多个分区(partition)来进行存储。kafka的partition的底层是一个只能增加(append-only)的文件，使用这样一个简单的结构可以极大的增加系统的吞吐能力。</p>
+<h2 id="简单的重试机制"><a href="#简单的重试机制" class="headerlink" title="简单的重试机制"></a>简单的重试机制</h2><p>最简单的重试机制是我们可以在一个线程中处理，如果没有到需要处理的时候，则进行sleep，伪代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageWithSimpleRetry</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">for</span> &#123;</div><div class="line">        message, ok := &lt;- kafkaConsumer.Message()</div><div class="line">        <span class="keyword">if</span> !ok &#123;</div><div class="line">            <span class="keyword">return</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        processed := <span class="literal">false</span></div><div class="line">        <span class="keyword">for</span> !processed &#123;</div><div class="line">            err := process(message)</div><div class="line">            <span class="keyword">if</span> !err &#123;</div><div class="line">                time.Sleep(waitPeriod)</div><div class="line">                processed = <span class="literal">true</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+        
+          <a class="article-more-a" href="/2018/02/21/kafka-retry-consumer/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">kafka</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/02/21/kafka-retry-consumer/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-vps-configure" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -169,7 +253,7 @@ ga('send', 'pageview');
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/18/vps-configure/">vps_configure</a>
+      <a class="article-title" href="/2018/02/18/vps-configure/">VPS安装shadowsocks</a>
     </h1>
   
 
@@ -189,12 +273,9 @@ ga('send', 'pageview');
 <h2 id="Shadowsocks-server"><a href="#Shadowsocks-server" class="headerlink" title="Shadowsocks-server"></a>Shadowsocks-server</h2><h3 id="下载-shadowsocks-libev"><a href="#下载-shadowsocks-libev" class="headerlink" title="下载 shadowsocks-libev"></a>下载 shadowsocks-libev</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">VERSION=<span class="string">"3.1.3"</span></div><div class="line">wget <span class="string">"https://github.com/shadowsocks/shadowsocks-libev/releases/download/v<span class="variable">$&#123;VERSION&#125;</span>/shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz"</span></div><div class="line">tar -zxvf shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz</div><div class="line"><span class="built_in">cd</span> shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span></div></pre></td></tr></table></figure>
 <h3 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">yum install epel-release -y</div><div class="line">yum update</div><div class="line">yum install gcc gettext autoconf libtool automake make pcre-devel asciidoc xmlto c-ares-devel libev-devel libsodium-devel mbedtls-devel rng-tools jitterentropy-rngd -y</div></pre></td></tr></table></figure>
 <h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure &amp;&amp; make &amp;&amp; make install</div></pre></td></tr></table></figure>
-<h3 id="配置Systemd-非必须，但是能够保证服务挂了能够重启"><a href="#配置Systemd-非必须，但是能够保证服务挂了能够重启" class="headerlink" title="配置Systemd (非必须，但是能够保证服务挂了能够重启)"></a>配置Systemd (非必须，但是能够保证服务挂了能够重启)</h3><ul>
-<li>注意：下面的 <code>/root/shadowsocks/config.json</code> 可以改成自己的路径，config.json 里面的内容改成自己对应的机器信息<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">mkdir -p /root/shadowsocks</div><div class="line"><span class="built_in">echo</span> <span class="string">'&#123;</span></div><div class="line"><span class="string">    "server":"0.0.0.0",</span></div><div class="line"><span class="string">    "server_port":8388,</span></div><div class="line"><span class="string">    "local_port":1080,</span></div><div class="line"><span class="string">    "local_address":"127.0.0.1",</span></div><div class="line"><span class="string">    "password":"******",</span></div><div class="line"><span class="string">    "method": "aes-128-cfb",</span></div><div class="line"><span class="string">    "timeout":600</span></div><div class="line"><span class="string">&#125;'</span> &gt; /root/shadowsocks/config.json</div><div class="line"></div><div class="line"><span class="built_in">echo</span> <span class="string">'[Uint]</span></div><div class="line"><span class="string">Description=shadowsocks</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">[Service]</span></div><div class="line"><span class="string">Type=oneshot</span></div><div class="line"><span class="string">ExecStart=/usr/local/bin/ss-server -c /root/shadowsocks/config.json &amp;</span></div><div class="line"><span class="string">StandardOutput=syslog</span></div><div class="line"><span class="string">StandardError=inherit</span></div><div class="line"><span class="string"></span></div><div class="line"><span class="string">[Install]</span></div><div class="line"><span class="string">WantedBy=multi-user.target'</span> &gt; /usr/lib/systemd/system/shadowsocks.service</div><div class="line"></div><div class="line">systemctl <span class="built_in">enable</span> shadowsocks.service</div><div class="line">systemctl start shadowsocks.service</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="Shadowsocks-client"><a href="#Shadowsocks-client" class="headerlink" title="Shadowsocks-client"></a>Shadowsocks-client</h2><p>由于我本人使用的是Mac系统，故而采用 <a href="https://github.com/shadowsocks/ShadowsocksX-NG" target="_blank" rel="external">ShadowsocksX-NG</a>，可以从<a href="https://github.com/shadowsocks/ShadowsocksX-NG/releases" target="_blank" rel="external">这里</a>下载最新的客户端</p>
-
+        
+          <a class="article-more-a" href="/2018/02/18/vps-configure/#more">more >></a>
+        
       
 
       
@@ -1101,15 +1182,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">others</a>
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1118,6 +1195,14 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">others</a>
               </li>
              
               <li class="article-tag-list-item">
