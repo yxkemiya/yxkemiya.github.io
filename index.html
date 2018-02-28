@@ -162,6 +162,90 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-thread-pool" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/02/27/thread-pool/">C++11线程池实现</a>
+    </h1>
+  
+
+        
+        <a href="/2018/02/27/thread-pool/" class="archive-article-date">
+  	<time datetime="2018-02-27T15:40:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>一直以来，多线程编程是一个程序员必须知道的一部分，在通常的编程中，一般不会出现需要多线程的时候，直接新建一个线程去做一件事，因为创建线程是一个相对来说比较费时的操作，所以很多程序都会在刚开始运行的时候创建好一个线程池，这样就可以在下次要使用的时候直接申请使用了，那么怎么实现一个线程池呢？</p>
+<h1 id="实现分析"><a href="#实现分析" class="headerlink" title="实现分析"></a>实现分析</h1><p>要实现一个线程池，要实现一个线程池，一般要从下面几个方面入手：</p>
+<ul>
+<li>线程池到底是什么</li>
+<li>如何从线程池中获取一个线程来运行一个任务</li>
+<li>当任务完成的时候，空闲的线程在做什么</li>
+<li>当任务比线程池中的线程多的时候，应该怎么处理</li>
+</ul>
+<h1 id="简单的代码实现"><a href="#简单的代码实现" class="headerlink" title="简单的代码实现"></a>简单的代码实现</h1><p>下面简单写一下线程池实现的代码，同时会在代码中加入一些注释，方便更好的理解线程池是如何实现的。</p>
+        
+          <a class="article-more-a" href="/2018/02/27/thread-pool/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/02/27/thread-pool/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-kafka-retry-consumer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -937,105 +1021,10 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/04/hello-world/">Git config user.email and user.name without --global option in Hexo blog</a>
-    </h1>
-  
-
-        
-        <a href="/2016/06/04/hello-world/" class="archive-article-date">
-  	<time datetime="2016-06-03T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-04</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>终于在各种努力下把博客搭好了，首先感谢<a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>的作者，然后是<a href="https://github.com/litten/hexo-theme-yilia" target="_blank" rel="external">Yilia主题</a>的作者.</p>
-<p>这篇博客就不写教程了，把自己遇到的一个问题记录下来。。.</p>
-<p>在搭建Hexo博客时，很多文章都提到了如何在Github上创建邮箱SSH密钥，但是在配置的时候全部都写上了这样几句话</p>
-<pre><code>$ git config --global user.name &quot;yourusername&quot;//用户名
-$ git config --global user.email  &quot;your@email.com&quot;//邮箱
-</code></pre><p>但是如果你不想配置<code>--global</code>选项时，好像没看到有人提过应该怎么设置，因为如果你在你博客的根目录下直接执行</p>
-<pre><code>$ git config user.name &quot;yourusername&quot;//用户名
-$ git config user.email  &quot;your@email.com&quot;//邮箱
-</code></pre><p>的话，你会看到<br><img src="https://yxkemiya.github.io/assets/not_in_a_git_dir.png" alt="not in a git directory"></p>
-<p>那么应该怎么办呢？</p>
-<p>步骤如下：</p>
-<ol>
-<li>执行<code>hexo d</code>或者<code>hexo deploy</code>命令，会得到<br><img src="https://yxkemiya.github.io/assets/git_config_error.png" alt=""></li>
-<li>执行完第一步后，就会在博客根目录下生成一个.deploy_git的目录，执行<code>cd .deploy_git</code></li>
-<li><p>再执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git config user.name &quot;yourusername&quot;</div><div class="line">git config user.email  &quot;your@email.com&quot;</div></pre></td></tr></table></figure>
-</li>
-<li><p>或者直接修改<code>.deploy_git/.git/config</code>, 在文件后面增加三行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[user]</div><div class="line">    email = your@email.com</div><div class="line">    name = yourusername</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p><strong>注</strong>: 第3步和第4步作用相同</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">hexo</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">git</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/06/04/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    </nav>
   
 
 
@@ -1182,10 +1171,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
              
@@ -1198,7 +1183,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
+                <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1206,7 +1199,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
             
             <div class="clearfix"></div>
