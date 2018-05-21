@@ -274,7 +274,7 @@ ga('send', 'pageview');
 <h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在使用kafka的时候，由于我们需要通知业务方，所以考虑到业务方可能会出现大问题，所以我们暂定了一个规则，重试三次通知业务方，每次间隔十分钟，如果三次都失败则认为失败，中间任意一次成功都可以认为是成功。这个规则就引入了我们今天要讨论的问题，由于kafka不支持延迟消息，那么怎么保证能够做到间隔十分钟通知一次用户呢？</p>
 <h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="kafka简介"><a href="#kafka简介" class="headerlink" title="kafka简介"></a>kafka简介</h2><p>kafka是一个分布式流式平台，它通常被用作构建一个实时的数据流平台，但是得益于topic的持久化，它也被用作消息流存储来处理历史数据，为了改进kafka的扩展能力，kafka持久化一个topic的时候，会用一个或者多个分区(partition)来进行存储。kafka的partition的底层是一个只能增加(append-only)的文件，使用这样一个简单的结构可以极大的增加系统的吞吐能力。</p>
 <h2 id="简单的重试机制"><a href="#简单的重试机制" class="headerlink" title="简单的重试机制"></a>简单的重试机制</h2><p>最简单的重试机制是我们可以在一个线程中处理，如果没有到需要处理的时候，则进行sleep，伪代码如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageWithSimpleRetry</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">for</span> &#123;</div><div class="line">        message, ok := &lt;- kafkaConsumer.Message()</div><div class="line">        <span class="keyword">if</span> !ok &#123;</div><div class="line">            <span class="keyword">return</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        processed := <span class="literal">false</span></div><div class="line">        <span class="keyword">for</span> !processed &#123;</div><div class="line">            err := process(message)</div><div class="line">            <span class="keyword">if</span> !err &#123;</div><div class="line">                time.Sleep(waitPeriod)</div><div class="line">                processed = <span class="literal">true</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageWithSimpleRetry</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        message, ok := &lt;- kafkaConsumer.Message()</span><br><span class="line">        <span class="keyword">if</span> !ok &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        processed := <span class="literal">false</span></span><br><span class="line">        <span class="keyword">for</span> !processed &#123;</span><br><span class="line">            err := process(message)</span><br><span class="line">            <span class="keyword">if</span> !err &#123;</span><br><span class="line">                time.Sleep(waitPeriod)</span><br><span class="line">                processed = <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
         
           <a class="article-more-a" href="/2018/02/21/kafka-retry-consumer/#more">more >></a>
         
@@ -354,9 +354,9 @@ ga('send', 'pageview');
 <p>这边博客主要记录一下搭建vps的过程，用于后续搭建vps时能够快速上手</p>
 </blockquote>
 <h2 id="System-Required"><a href="#System-Required" class="headerlink" title="System Required"></a>System Required</h2><p>系统要求：本教程在<code>Centos 7</code>下面经过测试和验证，保证能够使用</p>
-<h2 id="Shadowsocks-server"><a href="#Shadowsocks-server" class="headerlink" title="Shadowsocks-server"></a>Shadowsocks-server</h2><h3 id="下载-shadowsocks-libev"><a href="#下载-shadowsocks-libev" class="headerlink" title="下载 shadowsocks-libev"></a>下载 shadowsocks-libev</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">VERSION=<span class="string">"3.1.3"</span></div><div class="line">wget <span class="string">"https://github.com/shadowsocks/shadowsocks-libev/releases/download/v<span class="variable">$&#123;VERSION&#125;</span>/shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz"</span></div><div class="line">tar -zxvf shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz</div><div class="line"><span class="built_in">cd</span> shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span></div></pre></td></tr></table></figure>
-<h3 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">yum install epel-release -y</div><div class="line">yum update</div><div class="line">yum install gcc gettext autoconf libtool automake make pcre-devel asciidoc xmlto c-ares-devel libev-devel libsodium-devel mbedtls-devel rng-tools jitterentropy-rngd -y</div></pre></td></tr></table></figure>
-<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./configure &amp;&amp; make &amp;&amp; make install</div></pre></td></tr></table></figure>
+<h2 id="Shadowsocks-server"><a href="#Shadowsocks-server" class="headerlink" title="Shadowsocks-server"></a>Shadowsocks-server</h2><h3 id="下载-shadowsocks-libev"><a href="#下载-shadowsocks-libev" class="headerlink" title="下载 shadowsocks-libev"></a>下载 shadowsocks-libev</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">VERSION=<span class="string">"3.1.3"</span></span><br><span class="line">wget <span class="string">"https://github.com/shadowsocks/shadowsocks-libev/releases/download/v<span class="variable">$&#123;VERSION&#125;</span>/shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz"</span></span><br><span class="line">tar -zxvf shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz</span><br><span class="line"><span class="built_in">cd</span> shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release -y</span><br><span class="line">yum update</span><br><span class="line">yum install gcc gettext autoconf libtool automake make pcre-devel asciidoc xmlto c-ares-devel libev-devel libsodium-devel mbedtls-devel rng-tools jitterentropy-rngd -y</span><br></pre></td></tr></table></figure>
+<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
         
           <a class="article-more-a" href="/2018/02/18/vps-configure/#more">more >></a>
         
@@ -433,7 +433,7 @@ ga('send', 'pageview');
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近在逛微博的时候，看到了一个关于fork这个函数的题，如下：</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></div><div class="line">    </div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    fork();</div><div class="line">    fork();</div><div class="line">    fork();</div><div class="line">    <span class="built_in">printf</span>(<span class="string">"hello\n"</span>);</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fork();</span><br><span class="line">    fork();</span><br><span class="line">    fork();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"hello\n"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>问题是这段程序执行后，最终会打印多少条<code>hello</code>？</p>
 <p>这个题对很多人来说都是非常简单的，但是我还是进行了实验，在<code>Ubuntu14.04</code> + <code>clang++3.5</code> 上进行了测试，结果显示是 <strong>8</strong> 条，那么为什么是8条呢？</p>
         
@@ -955,7 +955,7 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>这篇博客以及后序的几个博客都来自来自<a href="https://www.coursera.org" target="_blank" rel="external">Coursera</a>上的<a href="https://www.coursera.org/learn/text-retrieval" target="_blank" rel="external">文本检索和搜索引擎(Text Retrieval And Search Engines)</a>课程。</p>
+        <p>这篇博客以及后序的几个博客都来自来自<a href="https://www.coursera.org" target="_blank" rel="noopener">Coursera</a>上的<a href="https://www.coursera.org/learn/text-retrieval" target="_blank" rel="noopener">文本检索和搜索引擎(Text Retrieval And Search Engines)</a>课程。</p>
 <p>这篇博客主要介绍一些基础的文本检索的内容。</p>
 <p>文本检索和搜索引擎课程安排如下：<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/main_schedule.png" alt="课程安排"></p>
         
@@ -1171,10 +1171,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
@@ -1183,7 +1179,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">linux</a>
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1191,11 +1187,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color2">others</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">others</a>
+                <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
