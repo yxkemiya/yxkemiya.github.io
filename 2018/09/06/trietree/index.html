@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://yxkemiya.github.io">
-  <title>VPS安装shadowsocks | Kemiya的博客</title>
+  <title>前缀树应用 | Kemiya的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这边博客主要记录一下搭建vps的过程，用于后续搭建vps时能够快速上手  System Required系统要求：本教程在Centos 7下面经过测试和验证，保证能够使用 Shadowsocks-server下载 shadowsocks-libev1234VERSION=&quot;3.1.3&quot;wget &quot;https://github.com/shadowsocks/shadowsocks-libev/">
-<meta name="keywords" content="others">
+  <meta name="description" content="背景最近遇到一个算法题，题目如下：  题目描述:对输入的单词进行字典序排序输出：字典序定义  单词中字母比较不区分大小写，两个单词先以第一个字母作为排序的基准，如果第一个字母相同，就用第二个字母为基准，如果第二个字母相同就以第三个字母为基准。依此类推，如果到某个字母不相同，字母顺序在前的那个单词顺序在前。  当一个短单词和一个长单词的开头部分都相同（即短单词是长单词从首字母开始的一部分），短单词顺">
+<meta name="keywords" content="algorithm">
 <meta property="og:type" content="article">
-<meta property="og:title" content="VPS安装shadowsocks">
-<meta property="og:url" content="https://yxkemiya.github.io/2018/02/18/vps-configure/index.html">
+<meta property="og:title" content="前缀树应用">
+<meta property="og:url" content="https://yxkemiya.github.io/2018/09/06/trietree/index.html">
 <meta property="og:site_name" content="Kemiya的博客">
-<meta property="og:description" content="这边博客主要记录一下搭建vps的过程，用于后续搭建vps时能够快速上手  System Required系统要求：本教程在Centos 7下面经过测试和验证，保证能够使用 Shadowsocks-server下载 shadowsocks-libev1234VERSION=&quot;3.1.3&quot;wget &quot;https://github.com/shadowsocks/shadowsocks-libev/">
+<meta property="og:description" content="背景最近遇到一个算法题，题目如下：  题目描述:对输入的单词进行字典序排序输出：字典序定义  单词中字母比较不区分大小写，两个单词先以第一个字母作为排序的基准，如果第一个字母相同，就用第二个字母为基准，如果第二个字母相同就以第三个字母为基准。依此类推，如果到某个字母不相同，字母顺序在前的那个单词顺序在前。  当一个短单词和一个长单词的开头部分都相同（即短单词是长单词从首字母开始的一部分），短单词顺">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-21T15:13:15.000Z">
+<meta property="og:updated_time" content="2018-09-06T03:03:37.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="VPS安装shadowsocks">
-<meta name="twitter:description" content="这边博客主要记录一下搭建vps的过程，用于后续搭建vps时能够快速上手  System Required系统要求：本教程在Centos 7下面经过测试和验证，保证能够使用 Shadowsocks-server下载 shadowsocks-libev1234VERSION=&quot;3.1.3&quot;wget &quot;https://github.com/shadowsocks/shadowsocks-libev/">
+<meta name="twitter:title" content="前缀树应用">
+<meta name="twitter:description" content="背景最近遇到一个算法题，题目如下：  题目描述:对输入的单词进行字典序排序输出：字典序定义  单词中字母比较不区分大小写，两个单词先以第一个字母作为排序的基准，如果第一个字母相同，就用第二个字母为基准，如果第二个字母相同就以第三个字母为基准。依此类推，如果到某个字母不相同，字母顺序在前的那个单词顺序在前。  当一个短单词和一个长单词的开头部分都相同（即短单词是长单词从首字母开始的一部分），短单词顺">
   
     <link rel="alternative" href="/atom.xml" title="Kemiya的博客" type="application/atom+xml">
   
@@ -162,40 +162,38 @@ ga('send', 'pageview');
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-vps-configure" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-trietree" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      VPS安装shadowsocks
+      前缀树应用
     </h1>
   
 
         
-        <a href="/2018/02/18/vps-configure/" class="archive-article-date">
-  	<time datetime="2018-02-18T11:43:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-18</time>
+        <a href="/2018/09/06/trietree/" class="archive-article-date">
+  	<time datetime="2018-09-06T03:03:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-09-06</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <blockquote>
-<p>这边博客主要记录一下搭建vps的过程，用于后续搭建vps时能够快速上手</p>
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近遇到一个算法题，题目如下：</p>
+<blockquote>
+<p><strong>题目描述:</strong><br>对输入的单词进行字典序排序输出：<br>字典序定义</p>
+<ol>
+<li>单词中字母比较不区分大小写，两个单词先以第一个字母作为排序的基准，如果第一个字母相同，就用第二个字母为基准，如果第二个字母相同就以第三个字母为基准。依此类推，如果到某个字母不相同，字母顺序在前的那个单词顺序在前。 </li>
+<li>当一个短单词和一个长单词的开头部分都相同（即短单词是长单词从首字母开始的一部分），短单词顺序在前。</li>
+<li>字母大小写不同的相同单词，只输出一次。<br><strong>输入描述:</strong><br>不超过255个字符中,单词间用空格进行分隔，为简单起见，单词不包含连字符，无其它标点符号<br><strong>输出描述:</strong><br>输出排序后的单词，单词之间用空格隔开（最后不带空格），重复的单词只输出一次。<br><strong>示例</strong><br>输入: Hello hello world<br>输出: Hello world</li>
+</ol>
 </blockquote>
-<h2 id="System-Required"><a href="#System-Required" class="headerlink" title="System Required"></a>System Required</h2><p>系统要求：本教程在<code>Centos 7</code>下面经过测试和验证，保证能够使用</p>
-<h2 id="Shadowsocks-server"><a href="#Shadowsocks-server" class="headerlink" title="Shadowsocks-server"></a>Shadowsocks-server</h2><h3 id="下载-shadowsocks-libev"><a href="#下载-shadowsocks-libev" class="headerlink" title="下载 shadowsocks-libev"></a>下载 shadowsocks-libev</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">VERSION=<span class="string">"3.1.3"</span></span><br><span class="line">wget <span class="string">"https://github.com/shadowsocks/shadowsocks-libev/releases/download/v<span class="variable">$&#123;VERSION&#125;</span>/shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz"</span></span><br><span class="line">tar -zxvf shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz</span><br><span class="line"><span class="built_in">cd</span> shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span></span><br></pre></td></tr></table></figure>
-<h3 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release -y</span><br><span class="line">yum update</span><br><span class="line">yum install gcc gettext autoconf libtool automake make pcre-devel asciidoc xmlto c-ares-devel libev-devel libsodium-devel mbedtls-devel rng-tools jitterentropy-rngd -y</span><br></pre></td></tr></table></figure>
-<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
-<h3 id="配置Systemd-非必须，但是能够保证服务挂了能够重启"><a href="#配置Systemd-非必须，但是能够保证服务挂了能够重启" class="headerlink" title="配置Systemd (非必须，但是能够保证服务挂了能够重启)"></a>配置Systemd (非必须，但是能够保证服务挂了能够重启)</h3><ul>
-<li>注意：下面的 <code>/root/shadowsocks/config.json</code> 可以改成自己的路径，config.json 里面的内容改成自己对应的机器信息<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p /root/shadowsocks</span><br><span class="line"><span class="built_in">echo</span> <span class="string">'&#123;</span></span><br><span class="line"><span class="string">    "server":"0.0.0.0",</span></span><br><span class="line"><span class="string">    "server_port":8388,</span></span><br><span class="line"><span class="string">    "local_port":1080,</span></span><br><span class="line"><span class="string">    "local_address":"127.0.0.1",</span></span><br><span class="line"><span class="string">    "password":"******",</span></span><br><span class="line"><span class="string">    "method": "aes-128-cfb",</span></span><br><span class="line"><span class="string">    "timeout":600</span></span><br><span class="line"><span class="string">&#125;'</span> &gt; /root/shadowsocks/config.json</span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">'[Uint]</span></span><br><span class="line"><span class="string">Description=shadowsocks</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Service]</span></span><br><span class="line"><span class="string">Type=oneshot</span></span><br><span class="line"><span class="string">ExecStart=/usr/local/bin/ss-server -c /root/shadowsocks/config.json &amp;</span></span><br><span class="line"><span class="string">StandardOutput=syslog</span></span><br><span class="line"><span class="string">StandardError=inherit</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Install]</span></span><br><span class="line"><span class="string">WantedBy=multi-user.target'</span> &gt; /usr/lib/systemd/system/shadowsocks.service</span><br><span class="line"></span><br><span class="line">systemctl <span class="built_in">enable</span> shadowsocks.service</span><br><span class="line">systemctl start shadowsocks.service</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="Shadowsocks-client"><a href="#Shadowsocks-client" class="headerlink" title="Shadowsocks-client"></a>Shadowsocks-client</h2><p>由于我本人使用的是Mac系统，故而采用 <a href="https://github.com/shadowsocks/ShadowsocksX-NG" target="_blank" rel="noopener">ShadowsocksX-NG</a>，可以从<a href="https://github.com/shadowsocks/ShadowsocksX-NG/releases" target="_blank" rel="noopener">这里</a>下载最新的客户端</p>
-
+<h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>这个题拿到手的时候，其实很容易就能想到解决方案，因为题目中已经提到了会用到字典序，而且输出需要前缀来进行比较，所以这是一个典型的<a href="https://zh.wikipedia.org/zh-hans/Trie" target="_blank" rel="noopener">前缀树</a>的应用场景，既然能够用到数据结构，那代码写起来就简单了。</p>
+<h1 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> TrieTree &#123;</span><br><span class="line"><span class="keyword">class</span> TreeNode &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  TreeNode(<span class="keyword">char</span> value) &#123;</span><br><span class="line">    value_ = value;</span><br><span class="line">    is_value = <span class="literal">false</span>;</span><br><span class="line">    childs = <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;TreeNode&gt;&gt;(<span class="number">26</span>, <span class="literal">nullptr</span>);</span><br><span class="line">  &#125;</span><br><span class="line">  ~TreeNode() &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;TreeNode&gt;&gt; childs;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">setAsValue</span><span class="params">()</span> </span>&#123; is_value = <span class="literal">true</span>; &#125;</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">isValue</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> is_value; &#125;</span><br><span class="line">  <span class="function"><span class="keyword">char</span> <span class="title">value</span><span class="params">()</span> </span>&#123; <span class="keyword">return</span> value_; &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">bool</span> is_value;</span><br><span class="line">  <span class="keyword">char</span> value_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insertIntoTree</span><span class="params">(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> &amp;str,</span></span></span><br><span class="line"><span class="function"><span class="params">                    <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;TrieTree::TreeNode&gt; root)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (str.empty()) &#123;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">auto</span> c : str) &#123;</span><br><span class="line">    c = <span class="built_in">std</span>::<span class="built_in">tolower</span>(c);</span><br><span class="line">    <span class="keyword">int</span> index = c - <span class="string">'a'</span>;</span><br><span class="line">    <span class="keyword">if</span> (root-&gt;childs[index] == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">      root-&gt;childs[index] =</span><br><span class="line">          <span class="built_in">std</span>::make_shared&lt;TrieTree::TreeNode&gt;(<span class="keyword">static_cast</span>&lt;<span class="keyword">char</span>&gt;(c));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    root = root-&gt;childs[index];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  root-&gt;setAsValue();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printTree</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;TrieTree::TreeNode&gt; root,</span></span></span><br><span class="line"><span class="function"><span class="params">               <span class="built_in">std</span>::<span class="built_in">string</span> prefix = <span class="string">""</span>)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (root-&gt;isValue()) &#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; prefix &lt;&lt; root-&gt;value() &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;child : root-&gt;childs) &#123;</span><br><span class="line">    <span class="keyword">if</span> (child != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">      printTree(child, prefix + root-&gt;value());</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;; <span class="comment">// namespace TrieTree</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">auto</span> root = <span class="built_in">std</span>::make_shared&lt;TrieTree::TreeNode&gt;(<span class="string">'\0'</span>);</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">string</span> str;</span><br><span class="line">  <span class="keyword">while</span> (<span class="built_in">std</span>::<span class="built_in">cin</span> &gt;&gt; str) &#123;</span><br><span class="line">    TrieTree::insertIntoTree(str, root);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  TrieTree::printTree(root);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
 
       
@@ -208,7 +206,7 @@ ga('send', 'pageview');
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">others</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">algorithm</a>
         		</li>
       		
 		</ul>
@@ -227,18 +225,9 @@ ga('send', 'pageview');
   
 <nav id="article-nav">
   
-    <a href="/2018/02/21/kafka-retry-consumer/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Kafka重试机制实现
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/08/23/think-fork/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">关于fork的一些思考</div>
+    <a href="/2018/02/27/thread-pool/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">C++11线程池实现</div>
       <i class="icon-circle-right"></i>
     </a>
   

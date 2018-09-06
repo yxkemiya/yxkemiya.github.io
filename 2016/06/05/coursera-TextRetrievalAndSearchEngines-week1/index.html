@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week1/text_access_mode.png">
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week1/document_selection_vs_ranking.png">
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week1/state_of_the_art_retrival_models.png">
-<meta property="og:updated_time" content="2018-05-21T12:44:28.000Z">
+<meta property="og:updated_time" content="2018-05-21T12:56:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本检索和搜索引擎(一）--文本检索基础">
 <meta name="twitter:description" content="这篇博客以及后序的几个博客都来自来自Coursera上的文本检索和搜索引擎(Text Retrieval And Search Engines)课程。 这篇博客主要介绍一些基础的文本检索的内容。 文本检索和搜索引擎课程安排如下：">
@@ -277,9 +277,9 @@ ga('send', 'pageview');
 </li>
 </ul>
 <h3 id="文本检索"><a href="#文本检索" class="headerlink" title="文本检索"></a>文本检索</h3><h4 id="一些表示方式"><a href="#一些表示方式" class="headerlink" title="一些表示方式"></a>一些表示方式</h4><ul>
-<li>词汇Vocabulary: $V = {W_1, W_2, …, W_N}$</li>
-<li>检索语句Query: $q = q_1,…,q_m，其中q_i \in V$</li>
-<li>文档Document: $d<em>i = d</em>{i1},…,d<em>{im</em>{j}}，其中d_{ij} \in V$</li>
+<li>词汇Vocabulary: $V = W_1, W_2, …, W_N$</li>
+<li>检索语句Query: $q = q_1,…,q_m$, 其中 $q_i \in V$</li>
+<li>文档Document: $d<em>i = d</em>{i1},…,d<em>{im</em>{j}}$，其中 $d_{ij} \in V$</li>
 <li>集合Collection: $C = {d_i,…,d_M}$</li>
 <li>相关文档集合: $R(q) \subseteq C$<ul>
 <li>通常未知，并且依赖用户</li>
@@ -319,10 +319,10 @@ ga('send', 'pageview');
 <li>用户将顺序浏览搜索结果</li>
 </ul>
 <h4 id="如何设计Ranking函数"><a href="#如何设计Ranking函数" class="headerlink" title="如何设计Ranking函数"></a>如何设计Ranking函数</h4><ul>
-<li>对于Query: $q = q_1,…,q_m，其中q_i \in V$ 和 Document: $d<em>i = d</em>{i1},…,d<em>{im</em>{j}}，其中d_{ij} \in V$</li>
+<li>对于Query: $q = q_1,…,q_m，其中q_i \in V$ 和 Document: $d<em>i = d</em>{i1},…,d<em>{im</em>{j}}$，其中 $d_{ij} \in V$</li>
 <li>Ranking Function: $f(q, d) \in \Re$</li>
 <li>一个好的Ranking函数应该把相关的文档排在不相关的文档前</li>
-<li>关键的挑战：怎样衡量文档$d$跟query$q$的相关性</li>
+<li>关键的挑战：怎样衡量文档 $d$ 跟query $q$的相关性</li>
 <li>检索模型<ul>
 <li>基于相似度的模型(Similarity-based models): $f(q, d) = similarity(q, d)$<ul>
 <li>向量空间模型(<strong>V</strong>ector <strong>S</strong>pace <strong>M</strong>odel)</li>
@@ -330,7 +330,7 @@ ga('send', 'pageview');
 </li>
 <li>概率模型(Probabilistic models): $f(q, d) = p(R = 1\:|\:d,q), 其中R \in {0,1}$<ul>
 <li>经典概率模型(Classic probabilistic model)</li>
-<li>Language model</li>
+<li>语言模型(Language model)</li>
 <li>Divergence-from-randomness model</li>
 </ul>
 </li>
@@ -339,11 +339,12 @@ ga('send', 'pageview');
 </ul>
 </li>
 </ul>
-<p><strong>检索模型的通常思路</strong>如下图<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week1/state_of_the_art_retrival_models.png" alt="Common idea in state of the art retrival models"></p>
-<p>当需要计算$f(q=”presidential campaign news”, d)$时(基于“Bag of Words”)</p>
+<p><strong>检索模型的通常思路</strong>如下图</p>
+<p><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week1/state_of_the_art_retrival_models.png" alt="Common idea in state of the art retrival models"></p>
+<p>当需要计算 $f(q=”presidential campaign news”, d)$ 时(基于”Bag of Words”思想)</p>
 <ol>
-<li>计算$g(“presidential”, d),\:g(“campaign”, d),\:g(“new”, d)$<ol>
-<li>$”presidential”在d$中出现的次数<ul>
+<li>计算 $g(“presidential”, d),\:g(“campaign”, d),\:g(“new”, d)$<ol>
+<li>$”presidential”$在 $d$ 中出现的次数<ul>
 <li>TF(Term Frequency): $c(“presidential”, d)$</li>
 </ul>
 </li>
@@ -553,14 +554,6 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">elasticsearch</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">踩坑日记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -581,6 +574,38 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">others</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">TF</a>
               </li>
              
@@ -593,35 +618,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
             
             <div class="clearfix"></div>

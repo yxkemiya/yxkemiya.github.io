@@ -24,7 +24,7 @@
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/bm25.png">
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/document_length.png">
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/pivoted_length_normalizer.png">
-<meta property="og:updated_time" content="2017-10-16T15:19:11.000Z">
+<meta property="og:updated_time" content="2018-05-22T01:53:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本检索和搜索引擎(三) --向量空间模型(二)">
 <meta name="twitter:description" content="简单VSM的改进　　从前面的简单版的VSM计算结果来看，$f(q,d2),f(q,d3),f(q,d4)$有相同的值3，而这个结果不是我们期望看到的，因为  从直觉上，我们认为$d4$比$d3$明显与$query$更相关，$d4$应该排在$d3$前面 $d2$跟$query$并不相关  这个问题就出在，函数$f(q, d)$并不能得到下面这些启发式的信息  $d4$比$d3$匹配上了更多的pres">
@@ -207,7 +207,8 @@ ga('send', 'pageview');
 <li>匹配<code>presidential</code>应该比匹配<code>about</code>重要得多</li>
 </ol>
 <a id="more"></a>
-<h3 id="1-改进的Vector-Placement：Term-Frequency-Vector"><a href="#1-改进的Vector-Placement：Term-Frequency-Vector" class="headerlink" title="1. 改进的Vector Placement：Term Frequency Vector"></a>1. 改进的Vector Placement：Term Frequency Vector</h3><p><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/improved_vector_placement_tf.png" alt="Improved Vector Placement"></p>
+<h3 id="1-改进的Vector-Placement：Term-Frequency-Vector"><a href="#1-改进的Vector-Placement：Term-Frequency-Vector" class="headerlink" title="1. 改进的Vector Placement：Term Frequency Vector"></a>1. 改进的Vector Placement：Term Frequency Vector</h3><p>$$TF = c(W_i, d)$$</p>
+<p><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/improved_vector_placement_tf.png" alt="Improved Vector Placement"></p>
 <ul>
 <li>$q=(x_1,x_2,…,x_N)，其中x_i 表示 W_i在query中出现的次数$</li>
 <li>$d=(y_1,y_2,…,y_N)，其中y_j 表示 W_i在document中出现的次数$</li>
@@ -540,14 +541,6 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">elasticsearch</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">踩坑日记</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -568,6 +561,38 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">others</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">TF</a>
               </li>
              
@@ -580,35 +605,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
             
             <div class="clearfix"></div>
