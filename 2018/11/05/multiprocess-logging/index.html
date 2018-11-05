@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://yxkemiya.github.io">
-  <title>Kafka重试机制实现 | Kemiya的博客</title>
+  <title>Python2 多进程下的logging | Kemiya的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这篇文章主要是记录一下，在做头条的红包支付系统的过程中，用kafka做消息队列时，如何设计一个可以重试的消费机制 这个方式已经在线上运行了很长的时间，但是后续总觉得这种实现方式不算很好，所以就在网上找到了一篇文章，也是介绍如何构造一个重试队列，而且正好跟我的想法相同，所以就打算把我自己的想法写下来  背景今年春节的时候，今日头条旗下的产品进行了分别进行了抢红包、百万英雄等活动，用户在活动中获取到">
-<meta name="keywords" content="kafka">
+  <meta name="description" content="背景在近期做股票个性化推荐的时候，我们利用协同过滤来计算用户可能喜欢点击的股票，目前的做法是先离线算好数据，然后写入到user profile服务中，整体过程都比较简单。由于GIL的存在，我用了multiprocessing这个包方便调用多进程模块进而加快写入的速度。为了能够在运行的过程中给自己一些提示信息，每写入1000条数据就希望能够打印一条日志，整体思路很简单，最开始使用的是print，但是">
+<meta name="keywords" content="python,multiprocessing,logging">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kafka重试机制实现">
-<meta property="og:url" content="https://yxkemiya.github.io/2018/02/21/kafka-retry-consumer/index.html">
+<meta property="og:title" content="Python2 多进程下的logging">
+<meta property="og:url" content="https://yxkemiya.github.io/2018/11/05/multiprocess-logging/index.html">
 <meta property="og:site_name" content="Kemiya的博客">
-<meta property="og:description" content="这篇文章主要是记录一下，在做头条的红包支付系统的过程中，用kafka做消息队列时，如何设计一个可以重试的消费机制 这个方式已经在线上运行了很长的时间，但是后续总觉得这种实现方式不算很好，所以就在网上找到了一篇文章，也是介绍如何构造一个重试队列，而且正好跟我的想法相同，所以就打算把我自己的想法写下来  背景今年春节的时候，今日头条旗下的产品进行了分别进行了抢红包、百万英雄等活动，用户在活动中获取到">
+<meta property="og:description" content="背景在近期做股票个性化推荐的时候，我们利用协同过滤来计算用户可能喜欢点击的股票，目前的做法是先离线算好数据，然后写入到user profile服务中，整体过程都比较简单。由于GIL的存在，我用了multiprocessing这个包方便调用多进程模块进而加快写入的速度。为了能够在运行的过程中给自己一些提示信息，每写入1000条数据就希望能够打印一条日志，整体思路很简单，最开始使用的是print，但是">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-21T15:13:49.000Z">
+<meta property="og:updated_time" content="2018-11-05T11:39:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kafka重试机制实现">
-<meta name="twitter:description" content="这篇文章主要是记录一下，在做头条的红包支付系统的过程中，用kafka做消息队列时，如何设计一个可以重试的消费机制 这个方式已经在线上运行了很长的时间，但是后续总觉得这种实现方式不算很好，所以就在网上找到了一篇文章，也是介绍如何构造一个重试队列，而且正好跟我的想法相同，所以就打算把我自己的想法写下来  背景今年春节的时候，今日头条旗下的产品进行了分别进行了抢红包、百万英雄等活动，用户在活动中获取到">
+<meta name="twitter:title" content="Python2 多进程下的logging">
+<meta name="twitter:description" content="背景在近期做股票个性化推荐的时候，我们利用协同过滤来计算用户可能喜欢点击的股票，目前的做法是先离线算好数据，然后写入到user profile服务中，整体过程都比较简单。由于GIL的存在，我用了multiprocessing这个包方便调用多进程模块进而加快写入的速度。为了能够在运行的过程中给自己一些提示信息，每写入1000条数据就希望能够打印一条日志，整体思路很简单，最开始使用的是print，但是">
   
     <link rel="alternative" href="/atom.xml" title="Kemiya的博客" type="application/atom+xml">
   
@@ -162,52 +162,49 @@ ga('send', 'pageview');
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-kafka-retry-consumer" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-multiprocess-logging" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Kafka重试机制实现
+      Python2 多进程下的logging
     </h1>
   
 
         
-        <a href="/2018/02/21/kafka-retry-consumer/" class="archive-article-date">
-  	<time datetime="2018-02-21T07:24:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-21</time>
+        <a href="/2018/11/05/multiprocess-logging/" class="archive-article-date">
+  	<time datetime="2018-11-05T11:36:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-05</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <blockquote>
-<p>这篇文章主要是记录一下，在做头条的红包支付系统的过程中，用kafka做消息队列时，如何设计一个可以重试的消费机制</p>
-<p>这个方式已经在线上运行了很长的时间，但是后续总觉得这种实现方式不算很好，所以就在网上找到了一篇文章，也是介绍如何构造一个重试队列，而且正好跟我的想法相同，所以就打算把我自己的想法写下来</p>
-</blockquote>
-<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>今年春节的时候，今日头条旗下的产品进行了分别进行了抢红包、百万英雄等活动，用户在活动中获取到的钱能够体现到各自的银行卡中，其中有一个重要的环节就是如何知道用户在我们部门代付出去的钱是否已经成功或失败。在项目中，我们采用了 <strong>回调</strong> 的方式进行通知。即收到付款完成的回调通知后，我们会再通过回调的方式通知业务方，由于前期考虑到数据量会很大，特别是大年三十的时候回出现高峰期，所以在整个项目中使用了kafka作为消息队列来使用(其实从我的理解来看，kafka作为消息队列并不是一个完美的解决方案，但是考虑到公司内部kafka比较稳定，而且不想在项目中引入更多的依赖项目，所以选用了kafka)</p>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在使用kafka的时候，由于我们需要通知业务方，所以考虑到业务方可能会出现大问题，所以我们暂定了一个规则，重试三次通知业务方，每次间隔十分钟，如果三次都失败则认为失败，中间任意一次成功都可以认为是成功。这个规则就引入了我们今天要讨论的问题，由于kafka不支持延迟消息，那么怎么保证能够做到间隔十分钟通知一次用户呢？</p>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="kafka简介"><a href="#kafka简介" class="headerlink" title="kafka简介"></a>kafka简介</h2><p>kafka是一个分布式流式平台，它通常被用作构建一个实时的数据流平台，但是得益于topic的持久化，它也被用作消息流存储来处理历史数据，为了改进kafka的扩展能力，kafka持久化一个topic的时候，会用一个或者多个分区(partition)来进行存储。kafka的partition的底层是一个只能增加(append-only)的文件，使用这样一个简单的结构可以极大的增加系统的吞吐能力。</p>
-<h2 id="简单的重试机制"><a href="#简单的重试机制" class="headerlink" title="简单的重试机制"></a>简单的重试机制</h2><p>最简单的重试机制是我们可以在一个线程中处理，如果没有到需要处理的时候，则进行sleep，伪代码如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageWithSimpleRetry</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        message, ok := &lt;- kafkaConsumer.Message()</span><br><span class="line">        <span class="keyword">if</span> !ok &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        processed := <span class="literal">false</span></span><br><span class="line">        <span class="keyword">for</span> !processed &#123;</span><br><span class="line">            err := process(message)</span><br><span class="line">            <span class="keyword">if</span> !err &#123;</span><br><span class="line">                time.Sleep(waitPeriod)</span><br><span class="line">                processed = <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在近期做股票个性化推荐的时候，我们利用协同过滤来计算用户可能喜欢点击的股票，目前的做法是先离线算好数据，然后写入到<code>user profile</code>服务中，整体过程都比较简单。由于<code>GIL</code>的存在，我用了<code>multiprocessing</code>这个包方便调用多进程模块进而加快写入的速度。为了能够在运行的过程中给自己一些提示信息，每写入1000条数据就希望能够打印一条日志，整体思路很简单，最开始使用的是<code>print</code>，但是发现<code>print</code>在多进程的时候，会丢失一部分日志，怀疑是缓冲区的原因造成的，执行的时候，用<code>python -u</code>来执行可以解决这个问题，就更怀疑是缓冲区的问题了，但是没有细揪，而且我还是希望能够得到能够基于时间滚动的日志，所以还是决定采用自带的<code>logging</code>库。在使用库的过程中就发现，很多日志都是没办法输出的，所以一直在寻找各种解决办法，下面记录一下解决过程。</p>
 <a id="more"></a>
-<h2 id="非阻塞的重试逻辑"><a href="#非阻塞的重试逻辑" class="headerlink" title="非阻塞的重试逻辑"></a>非阻塞的重试逻辑</h2><p>在类似kafka这种流式系统中，我们不能跳过当前的消息，然后去消费后面的消息，一旦我们移动了消息的指针(kafka中称之为offset)的时候，我们就不能再回去消费之前的消息了(强制移动指针是可取的，在这里不做讨论)。简单来说就是一旦我们消费掉了这条消息，我们就记住了这个指针的位置，由于这种情况的存在，如果当前消息没有消费成功，我们就不能继续消费下一条消息。按照这种逻辑，如果我们消费消息失败，我们就不能移动指针，这是一种不可取的方式，因为消息消息失败的情况很多，我们不能因为这条消息消费失败了，就不再继续消息后续的消息了。一个简单的比如，如果我们的消息在处理的过程中失败了，而我们设定的重试时间时一个小时，按照上面的简单重试机制，我们在接下来的一个小时只能，就不能做其他的事了，这在实时系统中是不可能存在的方案，所以我们需要想办法改进一下我们的实现方案。</p>
-<p>下面有两种解决方案，但是本质上其实是相同的，只是实现的逻辑不通，下面简单分析和对比一下实现方式：</p>
-<h3 id="使用后台线程来处理重试消息"><a href="#使用后台线程来处理重试消息" class="headerlink" title="使用后台线程来处理重试消息"></a>使用后台线程来处理重试消息</h3><p>当我们处理消息失败的时候，我们把消息放到后台线程中去处理，伪代码如下：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageNonBlock</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        err := process(message)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            <span class="keyword">go</span> waitAndRetryConsumeMessage(message)</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这样做的好处是，我们不需要外加一些依赖来处理这些逻辑，直接新建一个<code>routine</code>来处理，但是坏处就比较明显，比如，如果在某一段时间内，服务出现不稳定，消息消费可能会出现大面积失败，这个时候，我们就会新建太多的<code>routine</code>。</p>
-<h3 id="使用一个带buffer的队列来处理"><a href="#使用一个带buffer的队列来处理" class="headerlink" title="使用一个带buffer的队列来处理"></a>使用一个带buffer的队列来处理</h3><p>带buffer的队列有两种方式：</p>
-<ol>
-<li>用<code>go</code>自带的<code>chan</code>来做缓冲区，然后用多个routine来消费这个缓冲区，伪代码如下：</li>
-</ol>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">retryMessageChan := <span class="built_in">make</span>(<span class="keyword">chan</span> RetryMessage, bufferSize)</span><br><span class="line"><span class="keyword">for</span> i:= <span class="number">0</span>; i &lt; retryParallesim; i++ &#123;</span><br><span class="line">    <span class="keyword">go</span> consumeRetryChan()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageNonBlockByChan</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        err := process(message)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            retryMessageChan &lt;- message</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这种方案实现起来简单，而且很高效，可以简单的控制并发度来避免<code>routine</code>数量太多，但是这种方案也有问题，一是<code>chan</code>的bufferSize不好控制，如果太大，很容易造成资源浪费，如果比较小，然后偶遇失败高峰期的时候，<code>chan</code>容易写满，从而造成消费不能正常继续了</p>
-<ol>
-<li>申请一个新的kafka topic作为重试队列，然后新起任务消费重试队列即刻，伪代码如下：<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageNonBlockByKafka</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        ...</span><br><span class="line">        err := process(message)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            sendToRetryKafka(message)</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeRetryMessage</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        message := getRetryMessage()</span><br><span class="line">        err := processRetry(message)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h1><h2 id="进程间共享log-handler"><a href="#进程间共享log-handler" class="headerlink" title="进程间共享log handler"></a>进程间共享log handler</h2><p>在实现这个需求的时候，由于需要共享进程中的状态，所以首先想到了共享状态，这里先简单记录一下<code>multiprocessing</code>的简单状态共享</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line">counter = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">(c)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> counter</span><br><span class="line">    counter = c</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> counter</span><br><span class="line">    ret = do_something() <span class="comment"># 一份返回true or false的函数</span></span><br><span class="line">    <span class="keyword">with</span> counter.get_lock():</span><br><span class="line">        counter[<span class="number">0</span>] += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> ret:</span><br><span class="line">            counter[<span class="number">1</span>] += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            counter[<span class="number">2</span>] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 因为这里需要用到三个计数器，简单期间就直接用一个含有三个数字的Array</span></span><br><span class="line">    local_counter = multiprocessing.Array(<span class="string">'i'</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]) </span><br><span class="line">    pool = multiprocessing.Pool(<span class="number">4</span>, initializer=init, initargs=(local_counter))</span><br><span class="line">    pool.map(worker, range(<span class="number">1</span>, <span class="number">100</span>))</span><br></pre></td></tr></table></figure>
+<p>参考上面的代码，发现我们只需要在<code>init</code>里面把<code>logger</code>初始化了，然后在<code>worker</code>里面直接调用就行，结果发现并不能，所以就去找了<a href="https://docs.python.org/2.7/howto/logging-cookbook.html#logging-to-a-single-file-from-multiple-processes" target="_blank" rel="noopener">官方文档</a>，发现文档提到，虽然<code>logging</code>模块是线程安全的，用多<strong>线程</strong>把日志写到同一个文件中是支持的，但是用多<strong>进程</strong>把日志写到同一个文件中却是不支持的，原因为<code>python</code>没有一个标准的方法来支持多进程同时顺序访问一个文件，里面提到了一种方法，就是使用<code>SocketHandler</code>，然后所有的日志写入<code>socket</code>，再使用另外一个进程来读取这个<code>socket</code>把日志写入文件，所以这就提供了一个解决思路。</p>
+<h2 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h2><p>既然官方提供了一个解决思路，使用<code>SocketHandler</code>作为中间层来使用，那么我们完全可以借鉴这种思路来实现自己的方法，所以这里实现的时候使用了队列<code>Queue</code>。既然有这种方法，那么解决起来就只是实现的问题了。</p>
+<p>参考上面的代码，这里只需要多加几行代码就行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">queue = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">logger_worker</span><span class="params">(queue)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        value = queue.get() <span class="comment"># block here until get message</span></span><br><span class="line">        logger.info(value)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">'finish'</span> <span class="keyword">in</span> value:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 这儿初始化有变化</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">(c, q)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> counter</span><br><span class="line">    <span class="keyword">global</span> queue</span><br><span class="line">    counter, queue = c, q</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> counter</span><br><span class="line">    <span class="keyword">global</span> queue</span><br><span class="line">    ...</span><br><span class="line">    queue.put(<span class="string">'some message'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ = <span class="string">'__main__'</span>:</span><br><span class="line">    local_queue = Queue()</span><br><span class="line"></span><br><span class="line">    loggerWorker = multiprocessing.Process(target=logger_worker, args=(local_queue))</span><br><span class="line">    loggerWorker.start()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    local_counter = ...</span><br><span class="line">    pool = multiprocessing.Pool(<span class="number">4</span>, initializer=init, initargs=(local_counter, local_queue))</span><br><span class="line">    pool.map(worker, range(<span class="number">1</span>, <span class="number">100</span>))</span><br><span class="line">    pool.close()</span><br><span class="line">    pool.join()</span><br><span class="line"></span><br><span class="line">    local_queue.put(<span class="string">'finish'</span>)</span><br><span class="line">    loggerWorker.close()</span><br></pre></td></tr></table></figure>
+<h2 id="SocketHandler"><a href="#SocketHandler" class="headerlink" title="SocketHandler"></a>SocketHandler</h2><p>官方提供了<code>SocketHandler</code>的使用方法，只需要按照<a href="https://docs.python.org/2.7/library/logging.handlers.html#logging.handlers.SocketHandler" target="_blank" rel="noopener">文档</a>来实现一个<code>handler</code>就可以了，这里我就不写了，因为我没有采用这个方法，我觉得麻烦。。。</p>
+<h1 id="遇到的坑"><a href="#遇到的坑" class="headerlink" title="遇到的坑"></a>遇到的坑</h1><p>上面整体实现起来就比较简单了，整体流程也没什么问题，这里记录一个使用<code>multiprocessing</code>时候的坑。<br>因为我的程序会从HDFS上把离线算好的数据放入到<code>user profile</code>服务中，数据大概有7000万左右，整体数据加载到内存中大概需要占到<code>30G</code>的内存，虽然在开发机上影响不大，但是这显然不是我想看到的，所以我想到一个简单的方式，在<code>pool.map</code>的参数中，第二个<code>iterable</code>参数写成<code>yield</code>生成器的方式，但是每次程序运行的时候，内存占用一直在增长，缺没有打印出任何日志，我一直以为都是我的<code>Queue</code>占用了大量的内存，但是反复排查之后发现，每次都运行完了才会一次性打印很多日志，这个时候我就开始怀疑这个函数是否执行有问题，然后去找到了源码，发现了两个地方有使用错误。</p>
+<ul>
+<li><p><code>pool.map</code></p>
+<p>  <code>pool.map</code>是会等到程序结束之后才能执行下一步，从<a href="https://github.com/python/cpython/blob/2.7/Lib/multiprocessing/pool.py#L269" target="_blank" rel="noopener">源码</a>可以看到执行的是<code>map_async.get</code>，这个就很明显了，需要get执行完的结果，而在我这个使用过程中，并不需要结果，所以换成了<code>pool.map_async</code></p>
 </li>
-</ol>
-<p>可以在sendToKafka这种封装中新增<code>retryTimes</code>和<code>nextRetryTime</code>两个字段，分别表示重试次数和下次重试时间，这样就能够很方便的进行重试机制的实现了。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>由于Kafka的特性所致，目前没有想到更好的办法能够实现重试机制，如果有，请大家不吝赐教。但是目前<a href="http://nsq.io/" target="_blank" rel="noopener">NSQ</a>支持Deferred Message，这个可以很方便的实现重试机制，大家可以一试。</p>
+<li><p><code>__len__</code></p>
+<p>  换成<code>map_async</code>之后，发现程序还是不能按照预期的使用很少的内存就能很快的执行，这个时候继续追源码，发现<a href="https://github.com/python/cpython/blob/2.7/Lib/multiprocessing/pool.py#L321" target="_blank" rel="noopener">有一段</a>需要看<code>iterable</code>有没有<code>__len__</code>这个属性的，很显然使用<code>yield</code>是没有这个参数的，所以会强制转换成<code>list</code>，然后求长度，这就能解释为什么需要占用很大的内存才开始计算了。</p>
+<ul>
+<li><p>解决方案</p>
+<p>针对问题2，有两种解决方案，一是使用<code>pool.imap</code>，<a href="https://github.com/python/cpython/blob/2.7/Lib/multiprocessing/pool.py#L273" target="_blank" rel="noopener">文档</a>中写到，这个比<code>pool.map</code>慢很多，可能需要慎重考虑，另一种也是我目前用到的方法，由于<code>HDFS</code>上的文件有很多歌，那么我把读文件的操作移到<code>pool.async_map</code>里面去，这样<code>iterable</code>最多也就是几十个文件名而已，并不会占用大量内存，而且函数读文件的时候，可以一行一行的读取然后处理。</p>
+</li>
+</ul>
+</li>
+</ul>
 
       
 
@@ -221,7 +218,15 @@ ga('send', 'pageview');
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">kafka</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">multiprocessing</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">logging</a>
         		</li>
       		
 		</ul>
@@ -240,18 +245,9 @@ ga('send', 'pageview');
   
 <nav id="article-nav">
   
-    <a href="/2018/02/27/thread-pool/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          C++11线程池实现
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/02/18/vps-configure/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">VPS安装shadowsocks</div>
+    <a href="/2018/09/06/trietree/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">前缀树应用</div>
       <i class="icon-circle-right"></i>
     </a>
   

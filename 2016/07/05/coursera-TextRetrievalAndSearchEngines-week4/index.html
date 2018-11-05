@@ -17,7 +17,7 @@
 <meta property="og:description" content="概率检索模型(Probabilistic Retrieval Model)前面我们提到了向量空间模型(VSM)，这里我们来学习一个不同的模型来设计Ranking函数–概率检索模型，在概率检索模型中，我们基于document与query的相关性来定义Ranking函数，换一句话，我们假设有一个二元随机变量 $R$，document与query的相关度用 $f(q, d)$表示，则概率模型为:$$f(">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week4/probabilistic_retrieval_model_sample.png">
-<meta property="og:updated_time" content="2017-10-16T15:19:11.000Z">
+<meta property="og:updated_time" content="2018-09-06T09:52:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="概率检索模型和统计语言模型">
 <meta name="twitter:description" content="概率检索模型(Probabilistic Retrieval Model)前面我们提到了向量空间模型(VSM)，这里我们来学习一个不同的模型来设计Ranking函数–概率检索模型，在概率检索模型中，我们基于document与query的相关性来定义Ranking函数，换一句话，我们假设有一个二元随机变量 $R$，document与query的相关度用 $f(q, d)$表示，则概率模型为:$$f(">
@@ -188,7 +188,7 @@ ga('send', 'pageview');
 <p>在这一类模型中，有很多种不同的模型，其中一个经典的模型最终产出了我们在VSM中学过的BM25，因为BM25实际上更像是一个VSM，这一次我们主要讨论概率空间模型的一个子类–language model，特别是我们将会讨论到 Query Likelihood Retrieval Model，query似然检索模型是高效的概率模型之一，还有另外一种叫做Divergence-from-randomness model的，这个模型最后也变成了一个叫做PL2的函数，这也是一个高效的检索模型。</p>
 <a id="more"></a>
 <p>在Query Likelihood里，我们有以下的假设：<br>$$p(R=1|d,q) \approx p(q|d,R=1)$$<br>而$p(q|d,R=1)$则表示，如果一个用户喜欢document $d$，那么这个用户为了能够检索到$d$时有多大的可能会输入query $q$呢？这就是Query Likelihood的基本思想。</p>
-<p>为了对Query Likelihood有一个更深的理解，我们先来看看概率检索模型的基本思想，如下图:<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week4/probabilistic_retrieval_model_sample.png" alt=""></p>
+<p>为了对Query Likelihood有一个更深的理解，我们先来看看概率检索模型的基本思想，如下图:<br><img src="/assets/coursera/TextRASE/Week4/probabilistic_retrieval_model_sample.png" alt=""></p>
 <p>第一列表示query，第二列表示document，第三列表示query和document是否相关，上下两个部分分别表示user1和user2对query和document相关性的判断。那么我们怎么估计相关性的概率呢，或者说我们怎么计算相关性的概率呢？从直觉上，我们可以知道，对于特定的d和q来说：<br>$$f(d,q)=p(R=1|d,q)=\frac{count(q,d,R=1)}{count(d,q)} \tag{1}$$<br>根据上面的公式，我们就可以计算</p>
 <ul>
 <li>$p(R=1|q1,d1)=\frac{1}{2}$</li>
@@ -429,6 +429,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -465,7 +469,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">multiprocessing</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">logging</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -478,6 +490,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">

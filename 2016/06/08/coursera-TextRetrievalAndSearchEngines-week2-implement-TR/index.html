@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/inverted_index_example.png">
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/zipfs_law_pic.png">
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/sort_based_inversion.png">
-<meta property="og:updated_time" content="2017-10-16T15:19:11.000Z">
+<meta property="og:updated_time" content="2018-09-06T09:52:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本检索和搜索引擎(四) --文本检索实现">
 <meta name="twitter:description" content="文本检索实现前面我们讲到了VSM模型，接下来我们说一说搜索引擎中文本检索方式的简单实现！ 搜索引擎在实现的时候主要有两个比较大的挑战  存储大容量的数据 能够快速对一个query进行相应，同时能够服务多个query的并行查询  下图是一个典型的文本检索系统(Text Retrieval System)的系统架构">
@@ -193,7 +193,7 @@ ga('send', 'pageview');
 <li>存储大容量的数据</li>
 <li>能够快速对一个query进行相应，同时能够服务多个query的并行查询</li>
 </ul>
-<p>下图是一个典型的文本检索系统(Text Retrieval System)的系统架构<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/typical_tr_system_architecture.png" alt="TR System Architecture"></p>
+<p>下图是一个典型的文本检索系统(Text Retrieval System)的系统架构<br><img src="/assets/coursera/TextRASE/Week2/typical_tr_system_architecture.png" alt="TR System Architecture"></p>
 <a id="more"></a>
 <p>这个系统的整个处理过程可以分成三部分</p>
 <ol>
@@ -235,7 +235,7 @@ ga('send', 'pageview');
 <li>Other indices: 其他的索引，如文本索引(document indexing)就可能用在feedback机制上</li>
 </ul>
 <p>倒排的思想是：<strong>一个文档有很多的词，那么对于这些词来说，每一个词都能够匹配上一系列的文档，当我们在检索的时候，如果query中有这个词，我们就能够返回这个词所对应的文档列表，而我们又可以提前计算所有词对应的文档列表，所以倒排是目前来说最快的方式</strong></p>
-<p>那么如何预先计算<code>Inverted Index</code>呢？我们来看一个例子:<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/inverted_index_example.png" alt="Inverted Index Example"></p>
+<p>那么如何预先计算<code>Inverted Index</code>呢？我们来看一个例子:<br><img src="/assets/coursera/TextRASE/Week2/inverted_index_example.png" alt="Inverted Index Example"></p>
 <p>想要计算<code>Inverted Index</code>，我们需要维持一个<code>Dictionary</code>，在这个词典中，每一个<code>term</code>包含存储一些基本的统计信息(例如：包含这个<code>term</code>的文档数，$DF$，$IDF$，<code>Position</code>等)，这些统计信息有一部分是将被用在VSM计算中，除了这些基本统计信息外，我们还存储了能够匹配上一个<code>term</code>的所有文档，这些数据被存在一个叫做 <strong>Postings</strong> 的文件中。</p>
 <p>那么为什么<code>Inverted Index</code>能够快速检索呢？</p>
 <ul>
@@ -260,7 +260,7 @@ ga('send', 'pageview');
 <li>一个语料库中出现的非常频繁的词在另外一个语料库中可能非常罕见</li>
 </ul>
 <p>上面描述的现象可以用<strong>Zipf’s Law</strong>来说明</p>
-<p>$$Zipf’s Law：rank * frequency \approx constant$$<br>Zipf’s Law说的是，一个词的rank与词的frequency的乘积大致上等于一个常数constant，所以翻译成公式就是:<br>$$F(w) = \frac{C}{r(w)^\alpha}, a \approx 1, c \approx 0.1$$<br><strong>注</strong>:这里的$F(w)$表示frequency，$r(w)^\alpha$表示rank，$C$表示constant<br>下图表示$zipf’s law$对应的曲线<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/zipfs_law_pic.png" alt="Zipf&#39;s Law"></p>
+<p>$$Zipf’s Law：rank * frequency \approx constant$$<br>Zipf’s Law说的是，一个词的rank与词的frequency的乘积大致上等于一个常数constant，所以翻译成公式就是:<br>$$F(w) = \frac{C}{r(w)^\alpha}, a \approx 1, c \approx 0.1$$<br><strong>注</strong>:这里的$F(w)$表示frequency，$r(w)^\alpha$表示rank，$C$表示constant<br>下图表示$zipf’s law$对应的曲线<br><img src="/assets/coursera/TextRASE/Week2/zipfs_law_pic.png" alt="Zipf&#39;s Law"></p>
 <p>我们可以看到</p>
 <ul>
 <li>Word Freq随着Word Rank的增加单调递减</li>
@@ -296,7 +296,7 @@ ga('send', 'pageview');
 </ul>
 </li>
 </ul>
-<p><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/sort_based_inversion.png" alt="Sort-based Inversion"><br>上图展示了构造倒排索引的过程</p>
+<p><img src="/assets/coursera/TextRASE/Week2/sort_based_inversion.png" alt="Sort-based Inversion"><br>上图展示了构造倒排索引的过程</p>
 <ol>
 <li>将term和document都映射成Integer，映射成Integer的好处<ul>
 <li>非常容易处理，例如Integer可以作为数组的索引</li>
@@ -688,6 +688,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -724,7 +728,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">multiprocessing</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">logging</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -737,6 +749,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">

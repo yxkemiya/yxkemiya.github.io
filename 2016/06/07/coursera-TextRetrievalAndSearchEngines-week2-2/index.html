@@ -24,7 +24,7 @@
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/bm25.png">
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/document_length.png">
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/pivoted_length_normalizer.png">
-<meta property="og:updated_time" content="2018-05-22T01:53:41.000Z">
+<meta property="og:updated_time" content="2018-09-06T09:52:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本检索和搜索引擎(三) --向量空间模型(二)">
 <meta name="twitter:description" content="简单VSM的改进　　从前面的简单版的VSM计算结果来看，$f(q,d2),f(q,d3),f(q,d4)$有相同的值3，而这个结果不是我们期望看到的，因为  从直觉上，我们认为$d4$比$d3$明显与$query$更相关，$d4$应该排在$d3$前面 $d2$跟$query$并不相关  这个问题就出在，函数$f(q, d)$并不能得到下面这些启发式的信息  $d4$比$d3$匹配上了更多的pres">
@@ -208,7 +208,7 @@ ga('send', 'pageview');
 </ol>
 <a id="more"></a>
 <h3 id="1-改进的Vector-Placement：Term-Frequency-Vector"><a href="#1-改进的Vector-Placement：Term-Frequency-Vector" class="headerlink" title="1. 改进的Vector Placement：Term Frequency Vector"></a>1. 改进的Vector Placement：Term Frequency Vector</h3><p>$$TF = c(W_i, d)$$</p>
-<p><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/improved_vector_placement_tf.png" alt="Improved Vector Placement"></p>
+<p><img src="/assets/coursera/TextRASE/Week2/improved_vector_placement_tf.png" alt="Improved Vector Placement"></p>
 <ul>
 <li>$q=(x_1,x_2,…,x_N)，其中x_i 表示 W_i在query中出现的次数$</li>
 <li>$d=(y_1,y_2,…,y_N)，其中y_j 表示 W_i在document中出现的次数$</li>
@@ -223,8 +223,8 @@ ga('send', 'pageview');
 <p>$q$ = (1,1,1,1,0,…)<br>$d2$= (1,1,0,1,1,…)<br>$\Rightarrow f(q, d2) = 1*1 + 1*1 + 1*0 + 1*1 + 0*1 + … = 3$<br>$d3$= (1,0,1,1,0,…)<br>$\Rightarrow f(q, d3) = 1*1 + 1*0 + 1*1 + 1*1 + 0*0 + … = 3$<br>$d4$= (1,0,2,1,0,…)<br>$\Rightarrow f(q, d4) = 1*1 + 1*0 + 1*2 + 1*1 + 0*0 + … = 4$</p>
 </blockquote>
 <p>　　我们发现$f(q,d4) = 4$，所以$d4$在Ranking的时候将排在$d2$和$d3$的前面，这正是我们所期望看到的！但是$d2$和$d3$都等于$3$，那么我们应该如何解决这个问题呢？从上面的计算过程我们可以看到，$d2$匹配上了<code>about</code>这个单词，$d3$匹配上了<code>presidential</code>，但是很明显$d3$应该比$d2$更相关，因此我们想到的肯定是怎样提高<code>presidential</code>的权重，降低<code>about</code>的权重！</p>
-<h3 id="2-进一步改进Vector-Placement-Inverse-Document-Frequency-IDF"><a href="#2-进一步改进Vector-Placement-Inverse-Document-Frequency-IDF" class="headerlink" title="2.进一步改进Vector Placement: Inverse Document Frequency(IDF)"></a>2.进一步改进Vector Placement: Inverse Document Frequency(IDF)</h3><p>如下图所示，我们在计算$y_i$的时候，将原来的$y_i = c(W_i, d)$改成$y_i=c(W_i,d)*IDF(W_i)$<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/improved_vector_placement_idf.png" alt="Further Improved Vector Placement"></p>
-<p>那么什么是<strong>IDF</strong>呢？<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/idf_weighting.png" alt="IDF"></p>
+<h3 id="2-进一步改进Vector-Placement-Inverse-Document-Frequency-IDF"><a href="#2-进一步改进Vector-Placement-Inverse-Document-Frequency-IDF" class="headerlink" title="2.进一步改进Vector Placement: Inverse Document Frequency(IDF)"></a>2.进一步改进Vector Placement: Inverse Document Frequency(IDF)</h3><p>如下图所示，我们在计算$y_i$的时候，将原来的$y_i = c(W_i, d)$改成$y_i=c(W_i,d)*IDF(W_i)$<br><img src="/assets/coursera/TextRASE/Week2/improved_vector_placement_idf.png" alt="Further Improved Vector Placement"></p>
+<p>那么什么是<strong>IDF</strong>呢？<br><img src="/assets/coursera/TextRASE/Week2/idf_weighting.png" alt="IDF"></p>
 <p>IDF的解释如上图所示:</p>
 <p>$$IDF(W)=log[(M+1)/k]，其中M表示document的总数，k表示包含词W的document总数$$</p>
 <p>利用<strong>IDF</strong>改进，我们重新来看我们的例子：</p>
@@ -236,7 +236,7 @@ ga('send', 'pageview');
 <blockquote>
 <p>$d2=(1*1.5,\:1*1.0,\:0*2.5,\:1*3.1,\:0*1.8)$<br>$d3=(1*1.5,\:0*1.0,\:1*2.5,\:1*3.1,\:0*1.8)$<br>$\Rightarrow f(q,\:d2) = 5.6 &lt; 7.1 = f(q, d3)$</p>
 </blockquote>
-<p>那么是不是这个方法就能解决所有问题呢？<br>如下图所示:<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/tf_idf_weighting.png" alt="TF_IDF_WEIGHTING"><br>我们发现，$f(q,d1) = 2.5 &lt; f(q,d2) = 5.6 &lt; f(q,d3) = 7.1 &lt; f(q,d4) = 9.6$，这四个好像是合理的，但是当我们看$f(q,d5)$的时候，$f(q,d5)=13.9$，并不像我们认为的”$d5$是不相关的文档”，反而在这里$d5$变成了最相关的，这是不符合预期的！</p>
+<p>那么是不是这个方法就能解决所有问题呢？<br>如下图所示:<br><img src="/assets/coursera/TextRASE/Week2/tf_idf_weighting.png" alt="TF_IDF_WEIGHTING"><br>我们发现，$f(q,d1) = 2.5 &lt; f(q,d2) = 5.6 &lt; f(q,d3) = 7.1 &lt; f(q,d4) = 9.6$，这四个好像是合理的，但是当我们看$f(q,d5)$的时候，$f(q,d5)=13.9$，并不像我们认为的”$d5$是不相关的文档”，反而在这里$d5$变成了最相关的，这是不符合预期的！</p>
 <p><strong>Tips: 通常我们在优化某一种情况的时候，就会出现另外一只情况，所以取舍是一种非常重要的事！</strong></p>
 <h4 id="改进的VSM总结"><a href="#改进的VSM总结" class="headerlink" title="改进的VSM总结"></a>改进的VSM总结</h4><ul>
 <li>Improved VSM<ul>
@@ -258,9 +258,9 @@ ga('send', 'pageview');
 <li>词$w$第一次出现的时候能够提供较多的信息，比如document $d$可能与词$w$相关，因为这是一个从0到1的跃升</li>
 <li>后续再次出现相同的词$w$，它让我们更加确信document $d$与词$w$相关，但是设想一下，如果在document $d$中已经出现了50次$w$，那么再出现一次$w$好像并不能再给我们什么有用的信息了，因为我们已经可以确定document $d$与词$w$相关了！</li>
 </ul>
-<p>这样想的话，我们就想到应该要严格控制一个出现了很多次的词(term)对最终结果的贡献了，这就是<strong>TF Transformation</strong>的想法。<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/tf_transformation.png" alt="TF Transformation"></p>
+<p>这样想的话，我们就想到应该要严格控制一个出现了很多次的词(term)对最终结果的贡献了，这就是<strong>TF Transformation</strong>的想法。<br><img src="/assets/coursera/TextRASE/Week2/tf_transformation.png" alt="TF Transformation"></p>
 <p>但是目前来看的话，很多经验都验证了<strong>BM25 Transformation</strong>转换的结果最好</p>
-<p>$$BM25: y = \frac{(k+1)x}{x+k}$$<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/bm25.png" alt="BM25"></p>
+<p>$$BM25: y = \frac{(k+1)x}{x+k}$$<br><img src="/assets/coursera/TextRASE/Week2/bm25.png" alt="BM25"></p>
 <ul>
 <li>$k$是一个参数，它决定了BM25的上限$k+1$</li>
 <li>$k=0$的时候，BM25就退化成了0-1 Bit Vector，即最简单的那种VSM</li>
@@ -279,7 +279,7 @@ ga('send', 'pageview');
 </li>
 <li>基于BM25转换的Ranking函数<br>$$f(q,d) = \sum\limits_{i=1}^Nx_iy_i = \sum\limits_{w \in q \cap d}c(w,q) \frac{(k+1)c(w,d)}{c(w,d)+k} log \frac{M+1}{df(W)}$$</li>
 </ul>
-<h3 id="文本长度归一化-Document-Length-Normalization"><a href="#文本长度归一化-Document-Length-Normalization" class="headerlink" title="文本长度归一化(Document Length Normalization)"></a>文本长度归一化(Document Length Normalization)</h3><p>目前为止，我们在说VSM的时候提到了 $TF$、$IDF$，但是我们没有考虑到文本的长度，我们先来看一个例子<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/document_length.png" alt="Document Length"></p>
+<h3 id="文本长度归一化-Document-Length-Normalization"><a href="#文本长度归一化-Document-Length-Normalization" class="headerlink" title="文本长度归一化(Document Length Normalization)"></a>文本长度归一化(Document Length Normalization)</h3><p>目前为止，我们在说VSM的时候提到了 $TF$、$IDF$，但是我们没有考虑到文本的长度，我们先来看一个例子<br><img src="/assets/coursera/TextRASE/Week2/document_length.png" alt="Document Length"></p>
 <p>如上图所示，$d6$比$d4$匹配上的词更多，但是我们能说$d6 &gt; d4$吗？</p>
 <p>通常情况下，我们认为，如果你考虑一个非常长的文档是，这个文档就有更大的可能性匹配上任意一个$query$，所以我们引入<strong>Document Length Normalization</strong>:</p>
 <ul>
@@ -298,7 +298,7 @@ ga('send', 'pageview');
 </ul>
 </li>
 </ul>
-<p>Pivoted Length Normalizer如下图所示<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/pivoted_length_normalizer.png" alt="Pivoted Length Normalizer"></p>
+<p>Pivoted Length Normalizer如下图所示<br><img src="/assets/coursera/TextRASE/Week2/pivoted_length_normalizer.png" alt="Pivoted Length Normalizer"></p>
 <p>$$normalizer = 1 - b + b \frac{|\:d\:|}{avdl}，其中b \in [0, 1]$$<br>$b$控制着对文档的惩罚(奖励)力度，$b$越大，惩罚(奖励)的力度越大，对于文本长度大于平均长度时，我们适当的惩罚一下这个文本，文本长度小于平均长度时，我们给予适当的奖励。</p>
 <p>利用pivoted length normalizer，Ranking函数有下面两种比较常用的</p>
 <ul>
@@ -541,6 +541,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -577,7 +581,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">multiprocessing</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">logging</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -590,6 +602,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">

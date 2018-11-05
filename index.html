@@ -162,6 +162,90 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-multiprocess-logging" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/11/05/multiprocess-logging/">Python2 多进程下的logging</a>
+    </h1>
+  
+
+        
+        <a href="/2018/11/05/multiprocess-logging/" class="archive-article-date">
+  	<time datetime="2018-11-05T11:36:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在近期做股票个性化推荐的时候，我们利用协同过滤来计算用户可能喜欢点击的股票，目前的做法是先离线算好数据，然后写入到<code>user profile</code>服务中，整体过程都比较简单。由于<code>GIL</code>的存在，我用了<code>multiprocessing</code>这个包方便调用多进程模块进而加快写入的速度。为了能够在运行的过程中给自己一些提示信息，每写入1000条数据就希望能够打印一条日志，整体思路很简单，最开始使用的是<code>print</code>，但是发现<code>print</code>在多进程的时候，会丢失一部分日志，怀疑是缓冲区的原因造成的，执行的时候，用<code>python -u</code>来执行可以解决这个问题，就更怀疑是缓冲区的问题了，但是没有细揪，而且我还是希望能够得到能够基于时间滚动的日志，所以还是决定采用自带的<code>logging</code>库。在使用库的过程中就发现，很多日志都是没办法输出的，所以一直在寻找各种解决办法，下面记录一下解决过程。</p>
+        
+          <a class="article-more-a" href="/2018/11/05/multiprocess-logging/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">multiprocessing</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">logging</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/11/05/multiprocess-logging/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-trietree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -759,7 +843,7 @@ ga('send', 'pageview');
 <li>存储大容量的数据</li>
 <li>能够快速对一个query进行相应，同时能够服务多个query的并行查询</li>
 </ul>
-<p>下图是一个典型的文本检索系统(Text Retrieval System)的系统架构<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/typical_tr_system_architecture.png" alt="TR System Architecture"></p>
+<p>下图是一个典型的文本检索系统(Text Retrieval System)的系统架构<br><img src="/assets/coursera/TextRASE/Week2/typical_tr_system_architecture.png" alt="TR System Architecture"></p>
         
           <a class="article-more-a" href="/2016/06/08/coursera-TextRetrievalAndSearchEngines-week2-implement-TR/#more">more >></a>
         
@@ -925,100 +1009,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-coursera-TextRetrievalAndSearchEngines-week2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/06/coursera-TextRetrievalAndSearchEngines-week2/">文本检索和搜索引擎(二) --向量空间模型(Vector Space Model)</a>
-    </h1>
-  
-
-        
-        <a href="/2016/06/06/coursera-TextRetrievalAndSearchEngines-week2/" class="archive-article-date">
-  	<time datetime="2016-06-06T05:41:40.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>　　在前面一篇<a href="https://yxkemiya.github.io/2016/06/05/coursera-TextRetrievalAndSearchEngines/">博客</a>中提到，在<em>Document Ranking</em>策略下，我们很多种检索模型(Retrieval Models)，其中基于相似度的模型(Similarity-based models)中，我们提到了向量空间模型(<strong>V</strong>ector <strong>S</strong>pace <strong>M</strong>odel)，那么VSM是怎样的呢？
-　　</p>
-<h2 id="VSM基本思想"><a href="#VSM基本思想" class="headerlink" title="VSM基本思想"></a>VSM基本思想</h2><p>　　<img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/vector_space_model.png" alt="Vector Space Model"><br>
-        
-          <a class="article-more-a" href="/2016/06/06/coursera-TextRetrievalAndSearchEngines-week2/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Coursera</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Text Retrieval</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Search Engines</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">VSM</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Vector Space Model</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/06/06/coursera-TextRetrievalAndSearchEngines-week2/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1129,6 +1119,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -1165,7 +1159,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">multiprocessing</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">logging</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1178,6 +1180,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">

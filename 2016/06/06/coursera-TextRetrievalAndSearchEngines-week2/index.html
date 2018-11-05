@@ -23,7 +23,7 @@
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/similarity_instantiation_dot_product.png">
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/vsm_example.png">
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/simple_vsm_result.png">
-<meta property="og:updated_time" content="2017-10-16T15:19:11.000Z">
+<meta property="og:updated_time" content="2018-09-06T09:52:09.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本检索和搜索引擎(二) --向量空间模型(Vector Space Model)">
 <meta name="twitter:description" content="在前面一篇博客中提到，在Document Ranking策略下，我们很多种检索模型(Retrieval Models)，其中基于相似度的模型(Similarity-based models)中，我们提到了向量空间模型(Vector Space Model)，那么VSM是怎样的呢？ 　　 VSM基本思想">
@@ -190,9 +190,9 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>　　在前面一篇<a href="https://yxkemiya.github.io/2016/06/05/coursera-TextRetrievalAndSearchEngines/">博客</a>中提到，在<em>Document Ranking</em>策略下，我们很多种检索模型(Retrieval Models)，其中基于相似度的模型(Similarity-based models)中，我们提到了向量空间模型(<strong>V</strong>ector <strong>S</strong>pace <strong>M</strong>odel)，那么VSM是怎样的呢？
+        <p>　　在前面一篇<a href="/2016/06/05/coursera-TextRetrievalAndSearchEngines/">博客</a>中提到，在<em>Document Ranking</em>策略下，我们很多种检索模型(Retrieval Models)，其中基于相似度的模型(Similarity-based models)中，我们提到了向量空间模型(<strong>V</strong>ector <strong>S</strong>pace <strong>M</strong>odel)，那么VSM是怎样的呢？
 　　</p>
-<h2 id="VSM基本思想"><a href="#VSM基本思想" class="headerlink" title="VSM基本思想"></a>VSM基本思想</h2><p>　　<img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/vector_space_model.png" alt="Vector Space Model"><br><a id="more"></a><br>　　如上图，我们将VSM想象成一个高维空间，每一维代表不同的项(term)，我们假设所有的query和document都能够放在这个高维空间里面，下面用三维空间来举例：</p>
+<h2 id="VSM基本思想"><a href="#VSM基本思想" class="headerlink" title="VSM基本思想"></a>VSM基本思想</h2><p>　　<img src="/assets/coursera/TextRASE/Week2/vector_space_model.png" alt="Vector Space Model"><br><a id="more"></a><br>　　如上图，我们将VSM想象成一个高维空间，每一维代表不同的项(term)，我们假设所有的query和document都能够放在这个高维空间里面，下面用三维空间来举例：</p>
 <p>其中三个维度分别是：</p>
 <ul>
 <li>Programming</li>
@@ -213,7 +213,7 @@ ga('send', 'pageview');
 <li>$relevance(q, d) \propto similarity(q, d) = f(q, d)$</li>
 <li>之所以说VSM是一个framework，是因为还有很多内容并没有详细说明，所以不能用代码实现</li>
 </ul>
-<h2 id="VSM没有描述的内容"><a href="#VSM没有描述的内容" class="headerlink" title="VSM没有描述的内容"></a>VSM没有描述的内容</h2><p><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/vsm_does_not_say.png" alt="VSM Don&#39;t Say"></p>
+<h2 id="VSM没有描述的内容"><a href="#VSM没有描述的内容" class="headerlink" title="VSM没有描述的内容"></a>VSM没有描述的内容</h2><p><img src="/assets/coursera/TextRASE/Week2/vsm_does_not_say.png" alt="VSM Don&#39;t Say"></p>
 <ol>
 <li>怎样定义或者选取<code>VSM的基本概念(base concept)</code>，这里概念主要指VSM中的维度<ul>
 <li>我们假定这些维度是正交的(orthogonal)，只有正交的才不会出现冗余(redundancy)</li>
@@ -226,9 +226,9 @@ ga('send', 'pageview');
 </li>
 <li>怎样定义相似度衡量方法</li>
 </ol>
-<h2 id="VSM检索模型实现"><a href="#VSM检索模型实现" class="headerlink" title="VSM检索模型实现"></a>VSM检索模型实现</h2><h3 id="简单的VSM"><a href="#简单的VSM" class="headerlink" title="简单的VSM"></a>简单的VSM</h3><h4 id="VSM的维度实现（BOW）"><a href="#VSM的维度实现（BOW）" class="headerlink" title="VSM的维度实现（BOW）"></a>VSM的维度实现（BOW）</h4><p><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/dimension_instantiation_bow.png" alt="BOW"></p>
-<h4 id="定义向量-Bit-Vector"><a href="#定义向量-Bit-Vector" class="headerlink" title="定义向量 Bit Vector"></a>定义向量 Bit Vector</h4><p><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/vector_placement_bit_vector.png" alt="Bit Vector"></p>
-<h4 id="相似性实现：矩阵的点乘-Dot-Product"><a href="#相似性实现：矩阵的点乘-Dot-Product" class="headerlink" title="相似性实现：矩阵的点乘(Dot Product)"></a>相似性实现：矩阵的点乘(Dot Product)</h4><p><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/similarity_instantiation_dot_product.png" alt="Dot Product"></p>
+<h2 id="VSM检索模型实现"><a href="#VSM检索模型实现" class="headerlink" title="VSM检索模型实现"></a>VSM检索模型实现</h2><h3 id="简单的VSM"><a href="#简单的VSM" class="headerlink" title="简单的VSM"></a>简单的VSM</h3><h4 id="VSM的维度实现（BOW）"><a href="#VSM的维度实现（BOW）" class="headerlink" title="VSM的维度实现（BOW）"></a>VSM的维度实现（BOW）</h4><p><img src="/assets/coursera/TextRASE/Week2/dimension_instantiation_bow.png" alt="BOW"></p>
+<h4 id="定义向量-Bit-Vector"><a href="#定义向量-Bit-Vector" class="headerlink" title="定义向量 Bit Vector"></a>定义向量 Bit Vector</h4><p><img src="/assets/coursera/TextRASE/Week2/vector_placement_bit_vector.png" alt="Bit Vector"></p>
+<h4 id="相似性实现：矩阵的点乘-Dot-Product"><a href="#相似性实现：矩阵的点乘-Dot-Product" class="headerlink" title="相似性实现：矩阵的点乘(Dot Product)"></a>相似性实现：矩阵的点乘(Dot Product)</h4><p><img src="/assets/coursera/TextRASE/Week2/similarity_instantiation_dot_product.png" alt="Dot Product"></p>
 <p>$\Rightarrow$<strong>最简单的VSM = Bit-Vector + Dot-Product + BOW</strong></p>
 <p>这种简单的VSM的实现的条件是</p>
 <ul>
@@ -237,7 +237,7 @@ ga('send', 'pageview');
 <li>$x_i,y_j \in {0, 1}$ 其中 <code>1</code>代表词$W_i$出现了，<code>0</code>代表词$W_i$未出现</li>
 </ul>
 <h5 id="相似度"><a href="#相似度" class="headerlink" title="相似度"></a>相似度</h5><p>$\Rightarrow Sim(q, d) = q·d = x_1y_1 + … + x_Ny_N = \sum_{i=1}^Nx_iy_i$<br>那么，这种相似度的计算方法计算得到的结果代表什么呢，这样的Ranking函数是否有意义呢？</p>
-<p>用下面一个例子来进行解释：<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/vsm_example.png" alt="Example"></p>
+<p>用下面一个例子来进行解释：<br><img src="/assets/coursera/TextRASE/Week2/vsm_example.png" alt="Example"></p>
 <p>如上图，我们的<strong>理想排序</strong>情况是怎样的呢？</p>
 <h4 id="理想结果"><a href="#理想结果" class="headerlink" title="理想结果"></a>理想结果</h4><p>从图中我们可以大致猜测到，<code>d3</code>和<code>d4</code>跟query还算是相似，因为关键词命中的多(<code>about</code>是没有意义的词)，而<code>d1</code>、<code>d2</code>、<code>d5</code>与query不相关，同时，<code>d4</code>看起来应该比<code>d3</code>更相关，所以理想的结果应该是</p>
 <ol>
@@ -259,7 +259,7 @@ ga('send', 'pageview');
 <blockquote>
 <p>$q$ = (1,1,1,1,0,…)<br>$d1$= (1,1,0,0,0,…)<br>$\Rightarrow f(q, d1) = 1*1 + 1*1 + 1*0 + 1*0 + 0*0 + … = 2$<br>$d3$= (1,0,1,1,0,…)<br>$\Rightarrow f(q, d3) = 1*1 + 1*0 + 1*1 + 1*1 + 0*0 + … = 3$</p>
 </blockquote>
-<p>根据上面的算法，我们就可以算出<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week2/simple_vsm_result.png" alt="Simple VSM Result"><br>那么这种解法合理吗？</p>
+<p>根据上面的算法，我们就可以算出<br><img src="/assets/coursera/TextRASE/Week2/simple_vsm_result.png" alt="Simple VSM Result"><br>那么这种解法合理吗？</p>
 <p>按照我们的理解，如果一个文档跟query有很高的相关性，那么$f(q,d)$的值应该非常大才对，但是这里我们看到$f(q,d2),f(q,d3),f(q,d4)$有相同的值，但是我们理想的情况是<code>d4</code>应该有最大的值，所以这个算法看起来并不能很好的完成Ranking的任务。</p>
 <p><strong>简单VSM总结</strong></p>
 <ul>
@@ -466,6 +466,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -502,7 +506,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">multiprocessing</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">logging</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -515,6 +527,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">

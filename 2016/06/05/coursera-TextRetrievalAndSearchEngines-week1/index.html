@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week1/text_access_mode.png">
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week1/document_selection_vs_ranking.png">
 <meta property="og:image" content="https://yxkemiya.github.io/assets/coursera/TextRASE/Week1/state_of_the_art_retrival_models.png">
-<meta property="og:updated_time" content="2018-05-21T12:56:51.000Z">
+<meta property="og:updated_time" content="2018-09-06T09:52:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文本检索和搜索引擎(一）--文本检索基础">
 <meta name="twitter:description" content="这篇博客以及后序的几个博客都来自来自Coursera上的文本检索和搜索引擎(Text Retrieval And Search Engines)课程。 这篇博客主要介绍一些基础的文本检索的内容。 文本检索和搜索引擎课程安排如下：">
@@ -190,9 +190,9 @@ ga('send', 'pageview');
       
         <p>这篇博客以及后序的几个博客都来自来自<a href="https://www.coursera.org" target="_blank" rel="noopener">Coursera</a>上的<a href="https://www.coursera.org/learn/text-retrieval" target="_blank" rel="noopener">文本检索和搜索引擎(Text Retrieval And Search Engines)</a>课程。</p>
 <p>这篇博客主要介绍一些基础的文本检索的内容。</p>
-<p>文本检索和搜索引擎课程安排如下：<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/main_schedule.png" alt="课程安排"></p>
+<p>文本检索和搜索引擎课程安排如下：<br><img src="/assets/coursera/TextRASE/main_schedule.png" alt="课程安排"></p>
 <a id="more"></a>
-<h2 id="什么是自然语言处理（NLP）"><a href="#什么是自然语言处理（NLP）" class="headerlink" title="什么是自然语言处理（NLP）"></a>什么是自然语言处理（NLP）</h2><p>以下图的内容为例<br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week1/what_is_nlp.png" alt="nlp example"><br>我们人类很容易知道这个句子<code>A dog is chasing a boy on the playgroud</code>的意思，但是计算机应该以怎样的顺序处理这个句子，从而理解它呢？</p>
+<h2 id="什么是自然语言处理（NLP）"><a href="#什么是自然语言处理（NLP）" class="headerlink" title="什么是自然语言处理（NLP）"></a>什么是自然语言处理（NLP）</h2><p>以下图的内容为例<br><img src="/assets/coursera/TextRASE/Week1/what_is_nlp.png" alt="nlp example"><br>我们人类很容易知道这个句子<code>A dog is chasing a boy on the playgroud</code>的意思，但是计算机应该以怎样的顺序处理这个句子，从而理解它呢？</p>
 <ol>
 <li>词法分析(Lexical analysis)：词法分析主要是标注词的词性，譬如动词、名词等。</li>
 <li>语法分析(Syntactic analysis/Parsing)：词法分析主要工作是将词结合从而组成词组的结构，例如：<code>A</code> 和 <code>dog</code> 组合可以构成一个名词短语(Nonu Phrase)。语法分析并不能让你理解整个句子，它只是会产生一系列的语法结构。</li>
@@ -221,7 +221,7 @@ ga('send', 'pageview');
 </ol>
 </li>
 </ol>
-<h2 id="数据获取的两种方式"><a href="#数据获取的两种方式" class="headerlink" title="数据获取的两种方式"></a>数据获取的两种方式</h2><p><strong>Push方式 vs Pull方式</strong><br><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week1/text_access_mode.png" alt="Text Access"></p>
+<h2 id="数据获取的两种方式"><a href="#数据获取的两种方式" class="headerlink" title="数据获取的两种方式"></a>数据获取的两种方式</h2><p><strong>Push方式 vs Pull方式</strong><br><img src="/assets/coursera/TextRASE/Week1/text_access_mode.png" alt="Text Access"></p>
 <ol>
 <li><strong>Pull方式</strong>–搜索引擎<ul>
 <li>用户主动</li>
@@ -300,7 +300,7 @@ ga('send', 'pageview');
 </ul>
 </li>
 </ul>
-<p>下图表示Document Selection和Document Ranking的区别<br>    <img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week1/document_selection_vs_ranking.png" alt="Document Selection vs. Ranking"></p>
+<p>下图表示Document Selection和Document Ranking的区别<br>    <img src="/assets/coursera/TextRASE/Week1/document_selection_vs_ranking.png" alt="Document Selection vs. Ranking"></p>
 <h6 id="Document-Selection的问题"><a href="#Document-Selection的问题" class="headerlink" title="Document Selection的问题"></a>Document Selection的问题</h6><ul>
 <li>分类器不准确<ul>
 <li>太严格的约束条件(Over-constrained)的query $\Rightarrow$ 没有相关文档</li>
@@ -340,7 +340,7 @@ ga('send', 'pageview');
 </li>
 </ul>
 <p><strong>检索模型的通常思路</strong>如下图</p>
-<p><img src="https://yxkemiya.github.io/assets/coursera/TextRASE/Week1/state_of_the_art_retrival_models.png" alt="Common idea in state of the art retrival models"></p>
+<p><img src="/assets/coursera/TextRASE/Week1/state_of_the_art_retrival_models.png" alt="Common idea in state of the art retrival models"></p>
 <p>当需要计算 $f(q=”presidential campaign news”, d)$ 时(基于”Bag of Words”思想)</p>
 <ol>
 <li>计算 $g(“presidential”, d),\:g(“campaign”, d),\:g(“new”, d)$<ol>
@@ -554,6 +554,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -590,7 +594,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color2">python</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">multiprocessing</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">logging</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -603,6 +615,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">

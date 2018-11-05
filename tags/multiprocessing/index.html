@@ -6,20 +6,18 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://yxkemiya.github.io">
-  <title>Kafka重试机制实现 | Kemiya的博客</title>
+  <title>Tag: multiprocessing | Kemiya的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这篇文章主要是记录一下，在做头条的红包支付系统的过程中，用kafka做消息队列时，如何设计一个可以重试的消费机制 这个方式已经在线上运行了很长的时间，但是后续总觉得这种实现方式不算很好，所以就在网上找到了一篇文章，也是介绍如何构造一个重试队列，而且正好跟我的想法相同，所以就打算把我自己的想法写下来  背景今年春节的时候，今日头条旗下的产品进行了分别进行了抢红包、百万英雄等活动，用户在活动中获取到">
-<meta name="keywords" content="kafka">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Kafka重试机制实现">
-<meta property="og:url" content="https://yxkemiya.github.io/2018/02/21/kafka-retry-consumer/index.html">
+  <meta name="description" content="Kemiya的学习记录">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kemiya的博客">
+<meta property="og:url" content="https://yxkemiya.github.io/tags/multiprocessing/index.html">
 <meta property="og:site_name" content="Kemiya的博客">
-<meta property="og:description" content="这篇文章主要是记录一下，在做头条的红包支付系统的过程中，用kafka做消息队列时，如何设计一个可以重试的消费机制 这个方式已经在线上运行了很长的时间，但是后续总觉得这种实现方式不算很好，所以就在网上找到了一篇文章，也是介绍如何构造一个重试队列，而且正好跟我的想法相同，所以就打算把我自己的想法写下来  背景今年春节的时候，今日头条旗下的产品进行了分别进行了抢红包、百万英雄等活动，用户在活动中获取到">
+<meta property="og:description" content="Kemiya的学习记录">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-21T15:13:49.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Kafka重试机制实现">
-<meta name="twitter:description" content="这篇文章主要是记录一下，在做头条的红包支付系统的过程中，用kafka做消息队列时，如何设计一个可以重试的消费机制 这个方式已经在线上运行了很长的时间，但是后续总觉得这种实现方式不算很好，所以就在网上找到了一篇文章，也是介绍如何构造一个重试队列，而且正好跟我的想法相同，所以就打算把我自己的想法写下来  背景今年春节的时候，今日头条旗下的产品进行了分别进行了抢红包、百万英雄等活动，用户在活动中获取到">
+<meta name="twitter:title" content="Kemiya的博客">
+<meta name="twitter:description" content="Kemiya的学习记录">
   
     <link rel="alternative" href="/atom.xml" title="Kemiya的博客" type="application/atom+xml">
   
@@ -162,129 +160,68 @@ ga('send', 'pageview');
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-kafka-retry-consumer" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      Kafka重试机制实现
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2018" class="archive-year">2018</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2018/11/05/multiprocess-logging/" class="archive-article-date">
+  	<time datetime="2018-11-05T11:36:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-11-05</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2018/11/05/multiprocess-logging/">Python2 多进程下的logging</a>
     </h1>
   
 
-        
-        <a href="/2018/02/21/kafka-retry-consumer/" class="archive-article-date">
-  	<time datetime="2018-02-21T07:24:30.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>这篇文章主要是记录一下，在做头条的红包支付系统的过程中，用kafka做消息队列时，如何设计一个可以重试的消费机制</p>
-<p>这个方式已经在线上运行了很长的时间，但是后续总觉得这种实现方式不算很好，所以就在网上找到了一篇文章，也是介绍如何构造一个重试队列，而且正好跟我的想法相同，所以就打算把我自己的想法写下来</p>
-</blockquote>
-<h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>今年春节的时候，今日头条旗下的产品进行了分别进行了抢红包、百万英雄等活动，用户在活动中获取到的钱能够体现到各自的银行卡中，其中有一个重要的环节就是如何知道用户在我们部门代付出去的钱是否已经成功或失败。在项目中，我们采用了 <strong>回调</strong> 的方式进行通知。即收到付款完成的回调通知后，我们会再通过回调的方式通知业务方，由于前期考虑到数据量会很大，特别是大年三十的时候回出现高峰期，所以在整个项目中使用了kafka作为消息队列来使用(其实从我的理解来看，kafka作为消息队列并不是一个完美的解决方案，但是考虑到公司内部kafka比较稳定，而且不想在项目中引入更多的依赖项目，所以选用了kafka)</p>
-<h1 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h1><p>在使用kafka的时候，由于我们需要通知业务方，所以考虑到业务方可能会出现大问题，所以我们暂定了一个规则，重试三次通知业务方，每次间隔十分钟，如果三次都失败则认为失败，中间任意一次成功都可以认为是成功。这个规则就引入了我们今天要讨论的问题，由于kafka不支持延迟消息，那么怎么保证能够做到间隔十分钟通知一次用户呢？</p>
-<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="kafka简介"><a href="#kafka简介" class="headerlink" title="kafka简介"></a>kafka简介</h2><p>kafka是一个分布式流式平台，它通常被用作构建一个实时的数据流平台，但是得益于topic的持久化，它也被用作消息流存储来处理历史数据，为了改进kafka的扩展能力，kafka持久化一个topic的时候，会用一个或者多个分区(partition)来进行存储。kafka的partition的底层是一个只能增加(append-only)的文件，使用这样一个简单的结构可以极大的增加系统的吞吐能力。</p>
-<h2 id="简单的重试机制"><a href="#简单的重试机制" class="headerlink" title="简单的重试机制"></a>简单的重试机制</h2><p>最简单的重试机制是我们可以在一个线程中处理，如果没有到需要处理的时候，则进行sleep，伪代码如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageWithSimpleRetry</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        message, ok := &lt;- kafkaConsumer.Message()</span><br><span class="line">        <span class="keyword">if</span> !ok &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        processed := <span class="literal">false</span></span><br><span class="line">        <span class="keyword">for</span> !processed &#123;</span><br><span class="line">            err := process(message)</span><br><span class="line">            <span class="keyword">if</span> !err &#123;</span><br><span class="line">                time.Sleep(waitPeriod)</span><br><span class="line">                processed = <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h2 id="非阻塞的重试逻辑"><a href="#非阻塞的重试逻辑" class="headerlink" title="非阻塞的重试逻辑"></a>非阻塞的重试逻辑</h2><p>在类似kafka这种流式系统中，我们不能跳过当前的消息，然后去消费后面的消息，一旦我们移动了消息的指针(kafka中称之为offset)的时候，我们就不能再回去消费之前的消息了(强制移动指针是可取的，在这里不做讨论)。简单来说就是一旦我们消费掉了这条消息，我们就记住了这个指针的位置，由于这种情况的存在，如果当前消息没有消费成功，我们就不能继续消费下一条消息。按照这种逻辑，如果我们消费消息失败，我们就不能移动指针，这是一种不可取的方式，因为消息消息失败的情况很多，我们不能因为这条消息消费失败了，就不再继续消息后续的消息了。一个简单的比如，如果我们的消息在处理的过程中失败了，而我们设定的重试时间时一个小时，按照上面的简单重试机制，我们在接下来的一个小时只能，就不能做其他的事了，这在实时系统中是不可能存在的方案，所以我们需要想办法改进一下我们的实现方案。</p>
-<p>下面有两种解决方案，但是本质上其实是相同的，只是实现的逻辑不通，下面简单分析和对比一下实现方式：</p>
-<h3 id="使用后台线程来处理重试消息"><a href="#使用后台线程来处理重试消息" class="headerlink" title="使用后台线程来处理重试消息"></a>使用后台线程来处理重试消息</h3><p>当我们处理消息失败的时候，我们把消息放到后台线程中去处理，伪代码如下：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageNonBlock</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        err := process(message)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            <span class="keyword">go</span> waitAndRetryConsumeMessage(message)</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>这样做的好处是，我们不需要外加一些依赖来处理这些逻辑，直接新建一个<code>routine</code>来处理，但是坏处就比较明显，比如，如果在某一段时间内，服务出现不稳定，消息消费可能会出现大面积失败，这个时候，我们就会新建太多的<code>routine</code>。</p>
-<h3 id="使用一个带buffer的队列来处理"><a href="#使用一个带buffer的队列来处理" class="headerlink" title="使用一个带buffer的队列来处理"></a>使用一个带buffer的队列来处理</h3><p>带buffer的队列有两种方式：</p>
-<ol>
-<li>用<code>go</code>自带的<code>chan</code>来做缓冲区，然后用多个routine来消费这个缓冲区，伪代码如下：</li>
-</ol>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">retryMessageChan := <span class="built_in">make</span>(<span class="keyword">chan</span> RetryMessage, bufferSize)</span><br><span class="line"><span class="keyword">for</span> i:= <span class="number">0</span>; i &lt; retryParallesim; i++ &#123;</span><br><span class="line">    <span class="keyword">go</span> consumeRetryChan()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageNonBlockByChan</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        err := process(message)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            retryMessageChan &lt;- message</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这种方案实现起来简单，而且很高效，可以简单的控制并发度来避免<code>routine</code>数量太多，但是这种方案也有问题，一是<code>chan</code>的bufferSize不好控制，如果太大，很容易造成资源浪费，如果比较小，然后偶遇失败高峰期的时候，<code>chan</code>容易写满，从而造成消费不能正常继续了</p>
-<ol>
-<li>申请一个新的kafka topic作为重试队列，然后新起任务消费重试队列即刻，伪代码如下：<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageNonBlockByKafka</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        ...</span><br><span class="line">        err := process(message)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            sendToRetryKafka(message)</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeRetryMessage</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        message := getRetryMessage()</span><br><span class="line">        err := processRetry(message)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>可以在sendToKafka这种封装中新增<code>retryTimes</code>和<code>nextRetryTime</code>两个字段，分别表示重试次数和下次重试时间，这样就能够很方便的进行重试机制的实现了。</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>由于Kafka的特性所致，目前没有想到更好的办法能够实现重试机制，如果有，请大家不吝赐教。但是目前<a href="http://nsq.io/" target="_blank" rel="noopener">NSQ</a>支持Deferred Message，这个可以很方便的实现重试机制，大家可以一试。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">kafka</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">multiprocessing</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">logging</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2018/02/27/thread-pool/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          C++11线程池实现
-        
-      </div>
-    </a>
   
   
-    <a href="/2018/02/18/vps-configure/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">VPS安装shadowsocks</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-  
-  
+    </div></section>
   
 
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -307,9 +244,9 @@ ga('send', 'pageview');
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
-		isTag: false,
+		isTag: true,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
