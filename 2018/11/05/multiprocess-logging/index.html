@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="Kemiya的博客">
 <meta property="og:description" content="背景在近期做股票个性化推荐的时候，我们利用协同过滤来计算用户可能喜欢点击的股票，目前的做法是先离线算好数据，然后写入到user profile服务中，整体过程都比较简单。由于GIL的存在，我用了multiprocessing这个包方便调用多进程模块进而加快写入的速度。为了能够在运行的过程中给自己一些提示信息，每写入1000条数据就希望能够打印一条日志，整体思路很简单，最开始使用的是print，但是">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-11-05T11:39:09.000Z">
+<meta property="og:updated_time" content="2018-11-21T04:24:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python2 多进程下的logging">
 <meta name="twitter:description" content="背景在近期做股票个性化推荐的时候，我们利用协同过滤来计算用户可能喜欢点击的股票，目前的做法是先离线算好数据，然后写入到user profile服务中，整体过程都比较简单。由于GIL的存在，我用了multiprocessing这个包方便调用多进程模块进而加快写入的速度。为了能够在运行的过程中给自己一些提示信息，每写入1000条数据就希望能够打印一条日志，整体思路很简单，最开始使用的是print，但是">
@@ -200,7 +200,7 @@ ga('send', 'pageview');
 <p>  换成<code>map_async</code>之后，发现程序还是不能按照预期的使用很少的内存就能很快的执行，这个时候继续追源码，发现<a href="https://github.com/python/cpython/blob/2.7/Lib/multiprocessing/pool.py#L321" target="_blank" rel="noopener">有一段</a>需要看<code>iterable</code>有没有<code>__len__</code>这个属性的，很显然使用<code>yield</code>是没有这个参数的，所以会强制转换成<code>list</code>，然后求长度，这就能解释为什么需要占用很大的内存才开始计算了。</p>
 <ul>
 <li><p>解决方案</p>
-<p>针对问题2，有两种解决方案，一是使用<code>pool.imap</code>，<a href="https://github.com/python/cpython/blob/2.7/Lib/multiprocessing/pool.py#L273" target="_blank" rel="noopener">文档</a>中写到，这个比<code>pool.map</code>慢很多，可能需要慎重考虑，另一种也是我目前用到的方法，由于<code>HDFS</code>上的文件有很多歌，那么我把读文件的操作移到<code>pool.async_map</code>里面去，这样<code>iterable</code>最多也就是几十个文件名而已，并不会占用大量内存，而且函数读文件的时候，可以一行一行的读取然后处理。</p>
+<p>针对问题2，有两种解决方案，一是使用<code>pool.imap</code>，<a href="https://github.com/python/cpython/blob/2.7/Lib/multiprocessing/pool.py#L273" target="_blank" rel="noopener">文档</a>中写到，这个比<code>pool.map</code>慢很多，可能需要慎重考虑，另一种也是我目前用到的方法，由于<code>HDFS</code>上的文件有很多个，那么我把读文件的操作移到<code>pool.async_map</code>里面去，这样<code>iterable</code>最多也就是几十个文件名而已，并不会占用大量内存，而且函数读文件的时候，可以一行一行的读取然后处理。</p>
 </li>
 </ul>
 </li>
@@ -338,9 +338,8 @@ MathJax.Hub.Queue(function() {
 });
 </script>
 
-<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script src="//cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-
 
     
 <div class="tools-col" q-class="show:isShow,hide:isShow|isFalse" q-on="click:stop(e)">
@@ -410,15 +409,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">hexo</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -438,19 +441,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">others</a>
+                <a href="javascript:void(0)" class="js-tag color1">linux</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color2">others</a>
               </li>
              
               <li class="article-tag-list-item">
