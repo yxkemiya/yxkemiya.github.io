@@ -184,12 +184,15 @@ ga('send', 'pageview');
       
         <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>在近期做股票个性化推荐的时候，我们利用协同过滤来计算用户可能喜欢点击的股票，目前的做法是先离线算好数据，然后写入到<code>user profile</code>服务中，整体过程都比较简单。由于<code>GIL</code>的存在，我用了<code>multiprocessing</code>这个包方便调用多进程模块进而加快写入的速度。为了能够在运行的过程中给自己一些提示信息，每写入1000条数据就希望能够打印一条日志，整体思路很简单，最开始使用的是<code>print</code>，但是发现<code>print</code>在多进程的时候，会丢失一部分日志，怀疑是缓冲区的原因造成的，执行的时候，用<code>python -u</code>来执行可以解决这个问题，就更怀疑是缓冲区的问题了，但是没有细揪，而且我还是希望能够得到能够基于时间滚动的日志，所以还是决定采用自带的<code>logging</code>库。在使用库的过程中就发现，很多日志都是没办法输出的，所以一直在寻找各种解决办法，下面记录一下解决过程。</p>
 <a id="more"></a>
+
 <h1 id="解决过程"><a href="#解决过程" class="headerlink" title="解决过程"></a>解决过程</h1><h2 id="进程间共享log-handler"><a href="#进程间共享log-handler" class="headerlink" title="进程间共享log handler"></a>进程间共享log handler</h2><p>在实现这个需求的时候，由于需要共享进程中的状态，所以首先想到了共享状态，这里先简单记录一下<code>multiprocessing</code>的简单状态共享</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line">counter = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">(c)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> counter</span><br><span class="line">    counter = c</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> counter</span><br><span class="line">    ret = do_something() <span class="comment"># 一份返回true or false的函数</span></span><br><span class="line">    <span class="keyword">with</span> counter.get_lock():</span><br><span class="line">        counter[<span class="number">0</span>] += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> ret:</span><br><span class="line">            counter[<span class="number">1</span>] += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            counter[<span class="number">2</span>] += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 因为这里需要用到三个计数器，简单期间就直接用一个含有三个数字的Array</span></span><br><span class="line">    local_counter = multiprocessing.Array(<span class="string">'i'</span>, [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>]) </span><br><span class="line">    pool = multiprocessing.Pool(<span class="number">4</span>, initializer=init, initargs=(local_counter))</span><br><span class="line">    pool.map(worker, range(<span class="number">1</span>, <span class="number">100</span>))</span><br></pre></td></tr></table></figure>
+
 <p>参考上面的代码，发现我们只需要在<code>init</code>里面把<code>logger</code>初始化了，然后在<code>worker</code>里面直接调用就行，结果发现并不能，所以就去找了<a href="https://docs.python.org/2.7/howto/logging-cookbook.html#logging-to-a-single-file-from-multiple-processes" target="_blank" rel="noopener">官方文档</a>，发现文档提到，虽然<code>logging</code>模块是线程安全的，用多<strong>线程</strong>把日志写到同一个文件中是支持的，但是用多<strong>进程</strong>把日志写到同一个文件中却是不支持的，原因为<code>python</code>没有一个标准的方法来支持多进程同时顺序访问一个文件，里面提到了一种方法，就是使用<code>SocketHandler</code>，然后所有的日志写入<code>socket</code>，再使用另外一个进程来读取这个<code>socket</code>把日志写入文件，所以这就提供了一个解决思路。</p>
 <h2 id="消息队列"><a href="#消息队列" class="headerlink" title="消息队列"></a>消息队列</h2><p>既然官方提供了一个解决思路，使用<code>SocketHandler</code>作为中间层来使用，那么我们完全可以借鉴这种思路来实现自己的方法，所以这里实现的时候使用了队列<code>Queue</code>。既然有这种方法，那么解决起来就只是实现的问题了。</p>
 <p>参考上面的代码，这里只需要多加几行代码就行。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">queue = <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">logger_worker</span><span class="params">(queue)</span>:</span></span><br><span class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">        value = queue.get() <span class="comment"># block here until get message</span></span><br><span class="line">        logger.info(value)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">'finish'</span> <span class="keyword">in</span> value:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 这儿初始化有变化</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">(c, q)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> counter</span><br><span class="line">    <span class="keyword">global</span> queue</span><br><span class="line">    counter, queue = c, q</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">worker</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> counter</span><br><span class="line">    <span class="keyword">global</span> queue</span><br><span class="line">    ...</span><br><span class="line">    queue.put(<span class="string">'some message'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ = <span class="string">'__main__'</span>:</span><br><span class="line">    local_queue = Queue()</span><br><span class="line"></span><br><span class="line">    loggerWorker = multiprocessing.Process(target=logger_worker, args=(local_queue))</span><br><span class="line">    loggerWorker.start()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    local_counter = ...</span><br><span class="line">    pool = multiprocessing.Pool(<span class="number">4</span>, initializer=init, initargs=(local_counter, local_queue))</span><br><span class="line">    pool.map(worker, range(<span class="number">1</span>, <span class="number">100</span>))</span><br><span class="line">    pool.close()</span><br><span class="line">    pool.join()</span><br><span class="line"></span><br><span class="line">    local_queue.put(<span class="string">'finish'</span>)</span><br><span class="line">    loggerWorker.close()</span><br></pre></td></tr></table></figure>
+
 <h2 id="SocketHandler"><a href="#SocketHandler" class="headerlink" title="SocketHandler"></a>SocketHandler</h2><p>官方提供了<code>SocketHandler</code>的使用方法，只需要按照<a href="https://docs.python.org/2.7/library/logging.handlers.html#logging.handlers.SocketHandler" target="_blank" rel="noopener">文档</a>来实现一个<code>handler</code>就可以了，这里我就不写了，因为我没有采用这个方法，我觉得麻烦。。。</p>
 <h1 id="遇到的坑"><a href="#遇到的坑" class="headerlink" title="遇到的坑"></a>遇到的坑</h1><p>上面整体实现起来就比较简单了，整体流程也没什么问题，这里记录一个使用<code>multiprocessing</code>时候的坑。<br>因为我的程序会从HDFS上把离线算好的数据放入到<code>user profile</code>服务中，数据大概有7000万左右，整体数据加载到内存中大概需要占到<code>30G</code>的内存，虽然在开发机上影响不大，但是这显然不是我想看到的，所以我想到一个简单的方式，在<code>pool.map</code>的参数中，第二个<code>iterable</code>参数写成<code>yield</code>生成器的方式，但是每次程序运行的时候，内存占用一直在增长，缺没有打印出任何日志，我一直以为都是我的<code>Queue</code>占用了大量的内存，但是反复排查之后发现，每次都运行完了才会一次性打印很多日志，这个时候我就开始怀疑这个函数是否执行有问题，然后去找到了源码，发现了两个地方有使用错误。</p>
 <ul>
@@ -394,6 +397,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">VSM</a>
               </li>
              
@@ -414,10 +421,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -430,7 +433,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -439,14 +454,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -467,10 +474,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
             
             <div class="clearfix"></div>

@@ -290,12 +290,12 @@ ga('send', 'pageview');
 </ul>
 <h4 id="如何计算-R’-q"><a href="#如何计算-R’-q" class="headerlink" title="如何计算$R’(q)$"></a>如何计算$R’(q)$</h4><ul>
 <li>策略一：文本选取(Document selection)<ul>
-<li>$R’(q)={d \in C\:|\:f(d,q)=1}$，其中 $f(d,q) \in {0,1}$，且$f(d,q)$是一个函数或者一个两类的分类器</li>
+<li>$R’(q)={d \in C:|:f(d,q)=1}$，其中 $f(d,q) \in {0,1}$，且$f(d,q)$是一个函数或者一个两类的分类器</li>
 <li>系统来判断一个文档是否相关（<strong>绝对相关</strong>）</li>
 </ul>
 </li>
 <li>策略二：文本排序(Document Ranking)<ul>
-<li>$R’(q)={d \in C\:|\:f(d,q) &gt; \theta }$，其中 $f(d,q) \in \Re$，且$f(d,q)$是一个衡量相关度的函数，$\theta$是用户定义的截断点</li>
+<li>$R’(q)={d \in C:|:f(d,q) &gt; \theta }$，其中 $f(d,q) \in \Re$，且$f(d,q)$是一个衡量相关度的函数，$\theta$是用户定义的截断点</li>
 <li>系统只需要判断一个文档是否比另外一个文档更相关（<strong>相对相关</strong>）</li>
 </ul>
 </li>
@@ -328,7 +328,7 @@ ga('send', 'pageview');
 <li>向量空间模型(<strong>V</strong>ector <strong>S</strong>pace <strong>M</strong>odel)</li>
 </ul>
 </li>
-<li>概率模型(Probabilistic models): $f(q, d) = p(R = 1\:|\:d,q), 其中R \in {0,1}$<ul>
+<li>概率模型(Probabilistic models): $f(q, d) = p(R = 1:|:d,q), 其中R \in {0,1}$<ul>
 <li>经典概率模型(Classic probabilistic model)</li>
 <li>语言模型(Language model)</li>
 <li>Divergence-from-randomness model</li>
@@ -343,7 +343,7 @@ ga('send', 'pageview');
 <p><img src="/assets/coursera/TextRASE/Week1/state_of_the_art_retrival_models.png" alt="Common idea in state of the art retrival models"></p>
 <p>当需要计算 $f(q=”presidential campaign news”, d)$ 时(基于”Bag of Words”思想)</p>
 <ol>
-<li>计算 $g(“presidential”, d),\:g(“campaign”, d),\:g(“new”, d)$<ol>
+<li>计算 $g(“presidential”, d),:g(“campaign”, d),:g(“new”, d)$<ol>
 <li>$”presidential”$在 $d$ 中出现的次数<ul>
 <li>TF(Term Frequency): $c(“presidential”, d)$</li>
 </ul>
@@ -351,7 +351,7 @@ ga('send', 'pageview');
 <li><strong>Document length</strong>: $|d|$</li>
 <li>$”presidential”$在整个Collection($C = {d_i,…,d_M}$)中出现的次数<ul>
 <li>DF(Document Frequency):$df(“presidential”)$</li>
-<li>$P(“presidential”\:|\:collection)$</li>
+<li>$P(“presidential”:|:collection)$</li>
 </ul>
 </li>
 </ol>
@@ -553,6 +553,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">VSM</a>
               </li>
              
@@ -573,10 +577,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -589,7 +589,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -598,14 +610,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -626,10 +630,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
             
             <div class="clearfix"></div>

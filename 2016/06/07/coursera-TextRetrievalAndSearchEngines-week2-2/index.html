@@ -231,10 +231,10 @@ ga('send', 'pageview');
 <blockquote>
 <p>Query = “news about presidential campaign”<br>$d2$ = “… news about organic food campaign …”<br>$d3$ = “… news of presidential campaign …”<br>$V$ = {news, about, presidential, campaign, food …}</p>
 </blockquote>
-<p>根据上图中IDF的计算公式，我们是可以计算得到$V$中的每个词对应的IDF<br>这里我们基于一定的计算后假设：<br>$\Rightarrow IDF(W) = (1.5,\:1.0,\:2.5,\:3.1,\:1.8)$</p>
+<p>根据上图中IDF的计算公式，我们是可以计算得到$V$中的每个词对应的IDF<br>这里我们基于一定的计算后假设：<br>$\Rightarrow IDF(W) = (1.5,:1.0,:2.5,:3.1,:1.8)$</p>
 <p>从而</p>
 <blockquote>
-<p>$d2=(1*1.5,\:1*1.0,\:0*2.5,\:1*3.1,\:0*1.8)$<br>$d3=(1*1.5,\:0*1.0,\:1*2.5,\:1*3.1,\:0*1.8)$<br>$\Rightarrow f(q,\:d2) = 5.6 &lt; 7.1 = f(q, d3)$</p>
+<p>$d2=(1*1.5,:1*1.0,:0*2.5,:1*3.1,:0*1.8)$<br>$d3=(1*1.5,:0*1.0,:1*2.5,:1*3.1,:0*1.8)$<br>$\Rightarrow f(q,:d2) = 5.6 &lt; 7.1 = f(q, d3)$</p>
 </blockquote>
 <p>那么是不是这个方法就能解决所有问题呢？<br>如下图所示:<br><img src="/assets/coursera/TextRASE/Week2/tf_idf_weighting.png" alt="TF_IDF_WEIGHTING"><br>我们发现，$f(q,d1) = 2.5 &lt; f(q,d2) = 5.6 &lt; f(q,d3) = 7.1 &lt; f(q,d4) = 9.6$，这四个好像是合理的，但是当我们看$f(q,d5)$的时候，$f(q,d5)=13.9$，并不像我们认为的”$d5$是不相关的文档”，反而在这里$d5$变成了最相关的，这是不符合预期的！</p>
 <p><strong>Tips: 通常我们在优化某一种情况的时候，就会出现另外一只情况，所以取舍是一种非常重要的事！</strong></p>
@@ -251,9 +251,9 @@ ga('send', 'pageview');
 <h3 id="3-TF变换-TF-Transformation"><a href="#3-TF变换-TF-Transformation" class="headerlink" title="3.TF变换(TF Transformation)"></a>3.TF变换(TF Transformation)</h3><p>在前面使用TF-IDF改进的VSM模型的时候，我们发现$f(q,d5) = 13.9$，这与我们认为$d5$和$query$不相关是矛盾的，那么问题出在哪儿呢？</p>
 <p>我们先来看看带有TF-IDF权重的Ranking函数<br>$$f(q,d) = \sum\limits_{i=1}^Nx_iy_i = \sum\limits_{w \in q \cap d}c(w,q)c(w,d)log \frac{M+1}{df(W)}$$<br>结合上面的公式，我们再来看一下$d5$</p>
 <blockquote>
-<p>$d5=”… news\:of\:organic\:food\:campaign\:…\:campaign\:…\:campaign\:…\:campaign …”$</p>
+<p>$d5=”… news:of:organic:food:campaign:…:campaign:…:campaign:…:campaign …”$</p>
 </blockquote>
-<p>我们发现在计算$f(q,d5)$的时候，$c(w,d)$这一项有一个很大的值$c(“campaign”,\:d5)=4$，从而给计算$f(q,d5)$贡献了一个非常大的数，因此我们肯定需要设法降低$c(“campaign,\:d5”)$，那么我们就可以想到，我们不能够直接通过一个词出现的次数作为权重，也就是说:</p>
+<p>我们发现在计算$f(q,d5)$的时候，$c(w,d)$这一项有一个很大的值$c(“campaign”,:d5)=4$，从而给计算$f(q,d5)$贡献了一个非常大的数，因此我们肯定需要设法降低$c(“campaign,:d5”)$，那么我们就可以想到，我们不能够直接通过一个词出现的次数作为权重，也就是说:</p>
 <ul>
 <li>词$w$第一次出现的时候能够提供较多的信息，比如document $d$可能与词$w$相关，因为这是一个从0到1的跃升</li>
 <li>后续再次出现相同的词$w$，它让我们更加确信document $d$与词$w$相关，但是设想一下，如果在document $d$中已经出现了50次$w$，那么再出现一次$w$好像并不能再给我们什么有用的信息了，因为我们已经可以确定document $d$与词$w$相关了！</li>
@@ -294,12 +294,12 @@ ga('send', 'pageview');
 </ul>
 </li>
 <li>Pivoted Length Normalizer：平均程度作为轴心(pivot)<ul>
-<li>Normalizer = 1 if $|\:d\:|$ = average doc length (avdl)</li>
+<li>Normalizer = 1 if $|:d:|$ = average doc length (avdl)</li>
 </ul>
 </li>
 </ul>
 <p>Pivoted Length Normalizer如下图所示<br><img src="/assets/coursera/TextRASE/Week2/pivoted_length_normalizer.png" alt="Pivoted Length Normalizer"></p>
-<p>$$normalizer = 1 - b + b \frac{|\:d\:|}{avdl}，其中b \in [0, 1]$$<br>$b$控制着对文档的惩罚(奖励)力度，$b$越大，惩罚(奖励)的力度越大，对于文本长度大于平均长度时，我们适当的惩罚一下这个文本，文本长度小于平均长度时，我们给予适当的奖励。</p>
+<p>$$normalizer = 1 - b + b \frac{|:d:|}{avdl}，其中b \in [0, 1]$$<br>$b$控制着对文档的惩罚(奖励)力度，$b$越大，惩罚(奖励)的力度越大，对于文本长度大于平均长度时，我们适当的惩罚一下这个文本，文本长度小于平均长度时，我们给予适当的奖励。</p>
 <p>利用pivoted length normalizer，Ranking函数有下面两种比较常用的</p>
 <ul>
 <li>Pivoted Length Normalization VSM<br>$$f(q,d) = \sum\limits_{w \in q \cap d}c(w,q) \frac{ln[1+ln[1+c(w,d)]]}{1-b+b \frac{|d|}{avdl}}log \frac{M+1}{df(w)}, b \in [0,1]$$</li>
@@ -540,6 +540,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">VSM</a>
               </li>
              
@@ -560,10 +564,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -576,7 +576,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -585,14 +597,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -613,10 +617,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
             
             <div class="clearfix"></div>

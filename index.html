@@ -183,7 +183,7 @@ ga('send', 'pageview');
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>其实想些这篇博客已经很久了，这篇博客的内容其实来源于之前在<a href="https://www.weidian.com/" target="_blank" rel="noopener">微店</a>工作期间，公司内部做的技术分享中讲到的Linux同步机制，其中提到了Linux文件锁的内容，一直想找时间记录下来，但是一直都没有动笔，时隔三年之久之后，还是希望能够记录一下之前学到的内容，顺便复习一下。</p>
-<h1 id="文件锁类型"><a href="#文件锁类型" class="headerlink" title="文件锁类型"></a>文件锁类型</h1><p>Linux操作系统下，想要对一个文件加锁，一般有两种方式，一种是 <a href="http://man7.org/linux/man-pages/man2/flock.2.html" target="_blank" rel="noopener">flock</a>，另外一种则是 <a href="http://man7.org/linux/man-pages/man2/fcntl.2.html" target="_blank" rel="noopener">fcntl</a>，这两种锁的区别可以总结为下表：<br>
+<h1 id="文件锁类型"><a href="#文件锁类型" class="headerlink" title="文件锁类型"></a>文件锁类型</h1><p>Linux操作系统下，想要对一个文件加锁，一般有两种方式，一种是 <a href="http://man7.org/linux/man-pages/man2/flock.2.html" target="_blank" rel="noopener">flock</a>，另外一种则是 <a href="http://man7.org/linux/man-pages/man2/fcntl.2.html" target="_blank" rel="noopener">fcntl</a>，这两种锁的区别可以总结为下表：</p>
         
           <a class="article-more-a" href="/2019/08/19/file-lock/#more">more >></a>
         
@@ -349,8 +349,9 @@ ga('send', 'pageview');
 <ol>
 <li>单词中字母比较不区分大小写，两个单词先以第一个字母作为排序的基准，如果第一个字母相同，就用第二个字母为基准，如果第二个字母相同就以第三个字母为基准。依此类推，如果到某个字母不相同，字母顺序在前的那个单词顺序在前。 </li>
 <li>当一个短单词和一个长单词的开头部分都相同（即短单词是长单词从首字母开始的一部分），短单词顺序在前。</li>
-<li>字母大小写不同的相同单词，只输出一次。<br><strong>输入描述:</strong><br>不超过255个字符中,单词间用空格进行分隔，为简单起见，单词不包含连字符，无其它标点符号<br><strong>输出描述:</strong><br>输出排序后的单词，单词之间用空格隔开（最后不带空格），重复的单词只输出一次。<br><strong>示例</strong><br>输入: Hello hello world<br>输出: Hello world</li>
+<li>字母大小写不同的相同单词，只输出一次。</li>
 </ol>
+<p><strong>输入描述:</strong><br>不超过255个字符中,单词间用空格进行分隔，为简单起见，单词不包含连字符，无其它标点符号<br><strong>输出描述:</strong><br>输出排序后的单词，单词之间用空格隔开（最后不带空格），重复的单词只输出一次。<br><strong>示例</strong><br>输入: Hello hello world<br>输出: Hello world</p>
 </blockquote>
         
           <a class="article-more-a" href="/2018/09/06/trietree/#more">more >></a>
@@ -600,7 +601,9 @@ ga('send', 'pageview');
 </blockquote>
 <h2 id="System-Required"><a href="#System-Required" class="headerlink" title="System Required"></a>System Required</h2><p>系统要求：本教程在<code>Centos 7</code>下面经过测试和验证，保证能够使用</p>
 <h2 id="Shadowsocks-server"><a href="#Shadowsocks-server" class="headerlink" title="Shadowsocks-server"></a>Shadowsocks-server</h2><h3 id="下载-shadowsocks-libev"><a href="#下载-shadowsocks-libev" class="headerlink" title="下载 shadowsocks-libev"></a>下载 shadowsocks-libev</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">VERSION=<span class="string">"3.1.3"</span></span><br><span class="line">wget <span class="string">"https://github.com/shadowsocks/shadowsocks-libev/releases/download/v<span class="variable">$&#123;VERSION&#125;</span>/shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz"</span></span><br><span class="line">tar -zxvf shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span>.tar.gz</span><br><span class="line"><span class="built_in">cd</span> shadowsocks-libev-<span class="variable">$&#123;VERSION&#125;</span></span><br></pre></td></tr></table></figure>
+
 <h3 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install epel-release -y</span><br><span class="line">yum update</span><br><span class="line">yum install gcc gettext autoconf libtool automake make pcre-devel asciidoc xmlto c-ares-devel libev-devel libsodium-devel mbedtls-devel rng-tools jitterentropy-rngd -y</span><br></pre></td></tr></table></figure>
+
 <h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./configure &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
         
           <a class="article-more-a" href="/2018/02/18/vps-configure/#more">more >></a>
@@ -679,6 +682,7 @@ ga('send', 'pageview');
       
         <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>最近在逛微博的时候，看到了一个关于fork这个函数的题，如下：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    fork();</span><br><span class="line">    fork();</span><br><span class="line">    fork();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"hello\n"</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>问题是这段程序执行后，最终会打印多少条<code>hello</code>？</p>
 <p>这个题对很多人来说都是非常简单的，但是我还是进行了实验，在<code>Ubuntu14.04</code> + <code>clang++3.5</code> 上进行了测试，结果显示是 <strong>8</strong> 条，那么为什么是8条呢？</p>
         
@@ -1089,6 +1093,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">VSM</a>
               </li>
              
@@ -1109,10 +1117,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -1125,7 +1129,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1134,14 +1150,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1162,10 +1170,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
             
             <div class="clearfix"></div>

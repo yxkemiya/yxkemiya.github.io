@@ -192,7 +192,9 @@ ga('send', 'pageview');
       
         <p>　　在前面一篇<a href="/2016/06/05/coursera-TextRetrievalAndSearchEngines/">博客</a>中提到，在<em>Document Ranking</em>策略下，我们很多种检索模型(Retrieval Models)，其中基于相似度的模型(Similarity-based models)中，我们提到了向量空间模型(<strong>V</strong>ector <strong>S</strong>pace <strong>M</strong>odel)，那么VSM是怎样的呢？
 　　</p>
-<h2 id="VSM基本思想"><a href="#VSM基本思想" class="headerlink" title="VSM基本思想"></a>VSM基本思想</h2><p>　　<img src="/assets/coursera/TextRASE/Week2/vector_space_model.png" alt="Vector Space Model"><br><a id="more"></a><br>　　如上图，我们将VSM想象成一个高维空间，每一维代表不同的项(term)，我们假设所有的query和document都能够放在这个高维空间里面，下面用三维空间来举例：</p>
+<h2 id="VSM基本思想"><a href="#VSM基本思想" class="headerlink" title="VSM基本思想"></a>VSM基本思想</h2><p>　　<img src="/assets/coursera/TextRASE/Week2/vector_space_model.png" alt="Vector Space Model"></p>
+<a id="more"></a>
+<p>　　如上图，我们将VSM想象成一个高维空间，每一维代表不同的项(term)，我们假设所有的query和document都能够放在这个高维空间里面，下面用三维空间来举例：</p>
 <p>其中三个维度分别是：</p>
 <ul>
 <li>Programming</li>
@@ -232,8 +234,8 @@ ga('send', 'pageview');
 <p>$\Rightarrow$<strong>最简单的VSM = Bit-Vector + Dot-Product + BOW</strong></p>
 <p>这种简单的VSM的实现的条件是</p>
 <ul>
-<li>$q = (x_1,\:…,x_N)$</li>
-<li>$d = (y_1,\:…,y_N)$</li>
+<li>$q = (x_1,:…,x_N)$</li>
+<li>$d = (y_1,:…,y_N)$</li>
 <li>$x_i,y_j \in {0, 1}$ 其中 <code>1</code>代表词$W_i$出现了，<code>0</code>代表词$W_i$未出现</li>
 </ul>
 <h5 id="相似度"><a href="#相似度" class="headerlink" title="相似度"></a>相似度</h5><p>$\Rightarrow Sim(q, d) = q·d = x_1y_1 + … + x_Ny_N = \sum_{i=1}^Nx_iy_i$<br>那么，这种相似度的计算方法计算得到的结果代表什么呢，这样的Ranking函数是否有意义呢？</p>
@@ -465,6 +467,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">VSM</a>
               </li>
              
@@ -485,10 +491,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -501,7 +503,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -510,14 +524,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -538,10 +544,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
             
             <div class="clearfix"></div>

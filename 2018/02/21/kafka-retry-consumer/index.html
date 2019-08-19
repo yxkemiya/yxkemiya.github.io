@@ -191,19 +191,24 @@ ga('send', 'pageview');
 <h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><h2 id="kafka简介"><a href="#kafka简介" class="headerlink" title="kafka简介"></a>kafka简介</h2><p>kafka是一个分布式流式平台，它通常被用作构建一个实时的数据流平台，但是得益于topic的持久化，它也被用作消息流存储来处理历史数据，为了改进kafka的扩展能力，kafka持久化一个topic的时候，会用一个或者多个分区(partition)来进行存储。kafka的partition的底层是一个只能增加(append-only)的文件，使用这样一个简单的结构可以极大的增加系统的吞吐能力。</p>
 <h2 id="简单的重试机制"><a href="#简单的重试机制" class="headerlink" title="简单的重试机制"></a>简单的重试机制</h2><p>最简单的重试机制是我们可以在一个线程中处理，如果没有到需要处理的时候，则进行sleep，伪代码如下：</p>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageWithSimpleRetry</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        message, ok := &lt;- kafkaConsumer.Message()</span><br><span class="line">        <span class="keyword">if</span> !ok &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        processed := <span class="literal">false</span></span><br><span class="line">        <span class="keyword">for</span> !processed &#123;</span><br><span class="line">            err := process(message)</span><br><span class="line">            <span class="keyword">if</span> !err &#123;</span><br><span class="line">                time.Sleep(waitPeriod)</span><br><span class="line">                processed = <span class="literal">true</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <a id="more"></a>
 <h2 id="非阻塞的重试逻辑"><a href="#非阻塞的重试逻辑" class="headerlink" title="非阻塞的重试逻辑"></a>非阻塞的重试逻辑</h2><p>在类似kafka这种流式系统中，我们不能跳过当前的消息，然后去消费后面的消息，一旦我们移动了消息的指针(kafka中称之为offset)的时候，我们就不能再回去消费之前的消息了(强制移动指针是可取的，在这里不做讨论)。简单来说就是一旦我们消费掉了这条消息，我们就记住了这个指针的位置，由于这种情况的存在，如果当前消息没有消费成功，我们就不能继续消费下一条消息。按照这种逻辑，如果我们消费消息失败，我们就不能移动指针，这是一种不可取的方式，因为消息消息失败的情况很多，我们不能因为这条消息消费失败了，就不再继续消息后续的消息了。一个简单的比如，如果我们的消息在处理的过程中失败了，而我们设定的重试时间时一个小时，按照上面的简单重试机制，我们在接下来的一个小时只能，就不能做其他的事了，这在实时系统中是不可能存在的方案，所以我们需要想办法改进一下我们的实现方案。</p>
 <p>下面有两种解决方案，但是本质上其实是相同的，只是实现的逻辑不通，下面简单分析和对比一下实现方式：</p>
-<h3 id="使用后台线程来处理重试消息"><a href="#使用后台线程来处理重试消息" class="headerlink" title="使用后台线程来处理重试消息"></a>使用后台线程来处理重试消息</h3><p>当我们处理消息失败的时候，我们把消息放到后台线程中去处理，伪代码如下：<br><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageNonBlock</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        err := process(message)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            <span class="keyword">go</span> waitAndRetryConsumeMessage(message)</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="使用后台线程来处理重试消息"><a href="#使用后台线程来处理重试消息" class="headerlink" title="使用后台线程来处理重试消息"></a>使用后台线程来处理重试消息</h3><p>当我们处理消息失败的时候，我们把消息放到后台线程中去处理，伪代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageNonBlock</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        err := process(message)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            <span class="keyword">go</span> waitAndRetryConsumeMessage(message)</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>这样做的好处是，我们不需要外加一些依赖来处理这些逻辑，直接新建一个<code>routine</code>来处理，但是坏处就比较明显，比如，如果在某一段时间内，服务出现不稳定，消息消费可能会出现大面积失败，这个时候，我们就会新建太多的<code>routine</code>。</p>
 <h3 id="使用一个带buffer的队列来处理"><a href="#使用一个带buffer的队列来处理" class="headerlink" title="使用一个带buffer的队列来处理"></a>使用一个带buffer的队列来处理</h3><p>带buffer的队列有两种方式：</p>
 <ol>
 <li>用<code>go</code>自带的<code>chan</code>来做缓冲区，然后用多个routine来消费这个缓冲区，伪代码如下：</li>
 </ol>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">retryMessageChan := <span class="built_in">make</span>(<span class="keyword">chan</span> RetryMessage, bufferSize)</span><br><span class="line"><span class="keyword">for</span> i:= <span class="number">0</span>; i &lt; retryParallesim; i++ &#123;</span><br><span class="line">    <span class="keyword">go</span> consumeRetryChan()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageNonBlockByChan</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">        err := process(message)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            retryMessageChan &lt;- message</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>这种方案实现起来简单，而且很高效，可以简单的控制并发度来避免<code>routine</code>数量太多，但是这种方案也有问题，一是<code>chan</code>的bufferSize不好控制，如果太大，很容易造成资源浪费，如果比较小，然后偶遇失败高峰期的时候，<code>chan</code>容易写满，从而造成消费不能正常继续了</p>
 <ol start="2">
 <li>申请一个新的kafka topic作为重试队列，然后新起任务消费重试队列即刻，伪代码如下：<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeMessageNonBlockByKafka</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        ...</span><br><span class="line">        err := process(message)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            sendToRetryKafka(message)</span><br><span class="line">        &#125;</span><br><span class="line">        ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">consumeRetryMessage</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">for</span> &#123;</span><br><span class="line">        message := getRetryMessage()</span><br><span class="line">        err := processRetry(message)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            ...</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 </li>
 </ol>
 <p>可以在sendToKafka这种封装中新增<code>retryTimes</code>和<code>nextRetryTime</code>两个字段，分别表示重试次数和下次重试时间，这样就能够很方便的进行重试机制的实现了。</p>
@@ -389,6 +394,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">VSM</a>
               </li>
              
@@ -409,10 +418,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -425,7 +430,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -434,14 +451,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -462,10 +471,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
             
             <div class="clearfix"></div>

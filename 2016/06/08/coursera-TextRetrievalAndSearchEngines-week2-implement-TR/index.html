@@ -335,7 +335,7 @@ ga('send', 'pageview');
 </li>
 <li>整数压缩Encode的方法<ul>
 <li>Binary code: 固定长度的编码方式</li>
-<li>unary code: $x \geq 1$时，用$x-1$个<code>1</code>的bit加上一个<code>0</code>来编码，例如：$3 \Rightarrow110;\: 5 \Rightarrow1110$<ul>
+<li>unary code: $x \geq 1$时，用$x-1$个<code>1</code>的bit加上一个<code>0</code>来编码，例如：$3 \Rightarrow110;: 5 \Rightarrow1110$<ul>
 <li>$3 \Rightarrow 110$<ol>
 <li>前面的部分是$3-1=2$个<code>11</code></li>
 <li>加上一个<code>0</code> $\Rightarrow$ <code>110</code></li>
@@ -408,8 +408,7 @@ ga('send', 'pageview');
 <th>d5</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>初始值</td>
 <td>0</td>
 <td>0</td>
@@ -473,8 +472,7 @@ ga('send', 'pageview');
 <td>6</td>
 <td>3</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <p>上表就是整个的计算过程，我们先计算<code>info</code>这个term，然后计算<code>security</code>这个term，按照顺序一致计算下去就可以得到最后的结果了！<br>那么我们是应该先计算那种更加频繁的term还是那种相对稀少的term呢，特别是当我们不能或不想保存所有的分数累加器的时候，答案是<strong>我们应该先计算比较稀少的term</strong>，这是因为出现的少的term匹配上的文档较少，但是却能够恭喜非常高的分数(因为IDF的值非常大)。</p>
 <h4 id="进一步的效率改进"><a href="#进一步的效率改进" class="headerlink" title="进一步的效率改进"></a>进一步的效率改进</h4><ul>
 <li>缓存(Cache)，例如对query的结果进行缓存，可以在下次检索的时候直接返回结果；也可以对倒排索引进行缓存</li>
@@ -687,6 +685,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">VSM</a>
               </li>
              
@@ -707,10 +709,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -723,7 +721,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -732,14 +742,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -760,10 +762,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
             
             <div class="clearfix"></div>

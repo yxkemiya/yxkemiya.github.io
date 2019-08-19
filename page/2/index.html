@@ -290,7 +290,7 @@ ga('send', 'pageview');
       
         <p>　　在前面一篇<a href="/2016/06/05/coursera-TextRetrievalAndSearchEngines/">博客</a>中提到，在<em>Document Ranking</em>策略下，我们很多种检索模型(Retrieval Models)，其中基于相似度的模型(Similarity-based models)中，我们提到了向量空间模型(<strong>V</strong>ector <strong>S</strong>pace <strong>M</strong>odel)，那么VSM是怎样的呢？
 　　</p>
-<h2 id="VSM基本思想"><a href="#VSM基本思想" class="headerlink" title="VSM基本思想"></a>VSM基本思想</h2><p>　　<img src="/assets/coursera/TextRASE/Week2/vector_space_model.png" alt="Vector Space Model"><br>
+<h2 id="VSM基本思想"><a href="#VSM基本思想" class="headerlink" title="VSM基本思想"></a>VSM基本思想</h2><p>　　<img src="/assets/coursera/TextRASE/Week2/vector_space_model.png" alt="Vector Space Model"></p>
         
           <a class="article-more-a" href="/2016/06/06/coursera-TextRetrievalAndSearchEngines-week2/#more">more >></a>
         
@@ -472,21 +472,22 @@ ga('send', 'pageview');
 <p>这篇博客就不写教程了，把自己遇到的一个问题记录下来。。.</p>
 <p>在搭建Hexo博客时，很多文章都提到了如何在Github上创建邮箱SSH密钥，但是在配置的时候全部都写上了这样几句话</p>
 <pre><code>$ git config --global user.name &quot;yourusername&quot;//用户名
-$ git config --global user.email  &quot;your@email.com&quot;//邮箱
-</code></pre><p>但是如果你不想配置<code>--global</code>选项时，好像没看到有人提过应该怎么设置，因为如果你在你博客的根目录下直接执行</p>
+$ git config --global user.email  &quot;your@email.com&quot;//邮箱</code></pre><p>但是如果你不想配置<code>--global</code>选项时，好像没看到有人提过应该怎么设置，因为如果你在你博客的根目录下直接执行</p>
 <pre><code>$ git config user.name &quot;yourusername&quot;//用户名
-$ git config user.email  &quot;your@email.com&quot;//邮箱
-</code></pre><p>的话，你会看到<br><img src="/assets/not_in_a_git_dir.png" alt="not in a git directory"></p>
+$ git config user.email  &quot;your@email.com&quot;//邮箱</code></pre><p>的话，你会看到<br><img src="/assets/not_in_a_git_dir.png" alt="not in a git directory"></p>
 <p>那么应该怎么办呢？</p>
 <p>步骤如下：</p>
 <ol>
-<li>执行<code>hexo d</code>或者<code>hexo deploy</code>命令，会得到<br><img src="/assets/git_config_error.png" alt></li>
-<li>执行完第一步后，就会在博客根目录下生成一个.deploy_git的目录，执行<code>cd .deploy_git</code></li>
+<li><p>执行<code>hexo d</code>或者<code>hexo deploy</code>命令，会得到<br><img src="/assets/git_config_error.png" alt></p>
+</li>
+<li><p>执行完第一步后，就会在博客根目录下生成一个.deploy_git的目录，执行<code>cd .deploy_git</code></p>
+</li>
 <li><p>再执行</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config user.name &quot;yourusername&quot;</span><br><span class="line">git config user.email  &quot;your@email.com&quot;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>或者直接修改<code>.deploy_git/.git/config</code>, 在文件后面增加三行</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[user]</span><br><span class="line">    email = your@email.com</span><br><span class="line">    name = yourusername</span><br></pre></td></tr></table></figure>
+
 </li>
 </ol>
 <p><strong>注</strong>: 第3步和第4步作用相同</p>
@@ -656,6 +657,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">VSM</a>
               </li>
              
@@ -676,10 +681,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -692,7 +693,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -701,14 +714,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -729,10 +734,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
             
             <div class="clearfix"></div>

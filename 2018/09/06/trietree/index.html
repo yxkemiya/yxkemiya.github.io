@@ -188,8 +188,9 @@ ga('send', 'pageview');
 <ol>
 <li>单词中字母比较不区分大小写，两个单词先以第一个字母作为排序的基准，如果第一个字母相同，就用第二个字母为基准，如果第二个字母相同就以第三个字母为基准。依此类推，如果到某个字母不相同，字母顺序在前的那个单词顺序在前。 </li>
 <li>当一个短单词和一个长单词的开头部分都相同（即短单词是长单词从首字母开始的一部分），短单词顺序在前。</li>
-<li>字母大小写不同的相同单词，只输出一次。<br><strong>输入描述:</strong><br>不超过255个字符中,单词间用空格进行分隔，为简单起见，单词不包含连字符，无其它标点符号<br><strong>输出描述:</strong><br>输出排序后的单词，单词之间用空格隔开（最后不带空格），重复的单词只输出一次。<br><strong>示例</strong><br>输入: Hello hello world<br>输出: Hello world</li>
+<li>字母大小写不同的相同单词，只输出一次。</li>
 </ol>
+<p><strong>输入描述:</strong><br>不超过255个字符中,单词间用空格进行分隔，为简单起见，单词不包含连字符，无其它标点符号<br><strong>输出描述:</strong><br>输出排序后的单词，单词之间用空格隔开（最后不带空格），重复的单词只输出一次。<br><strong>示例</strong><br>输入: Hello hello world<br>输出: Hello world</p>
 </blockquote>
 <a id="more"></a>
 <h1 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h1><p>这个题拿到手的时候，其实很容易就能想到解决方案，因为题目中已经提到了会用到字典序，而且输出需要前缀来进行比较，所以这是一个典型的<a href="https://zh.wikipedia.org/zh-hans/Trie" target="_blank" rel="noopener">前缀树</a>的应用场景，既然能够用到数据结构，那代码写起来就简单了。</p>
@@ -374,6 +375,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">VSM</a>
               </li>
              
@@ -394,10 +399,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -410,7 +411,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -419,14 +432,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -447,10 +452,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
             
             <div class="clearfix"></div>

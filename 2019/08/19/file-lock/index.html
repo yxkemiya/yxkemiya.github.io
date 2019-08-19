@@ -185,7 +185,9 @@ ga('send', 'pageview');
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>其实想些这篇博客已经很久了，这篇博客的内容其实来源于之前在<a href="https://www.weidian.com/" target="_blank" rel="noopener">微店</a>工作期间，公司内部做的技术分享中讲到的Linux同步机制，其中提到了Linux文件锁的内容，一直想找时间记录下来，但是一直都没有动笔，时隔三年之久之后，还是希望能够记录一下之前学到的内容，顺便复习一下。</p>
-<h1 id="文件锁类型"><a href="#文件锁类型" class="headerlink" title="文件锁类型"></a>文件锁类型</h1><p>Linux操作系统下，想要对一个文件加锁，一般有两种方式，一种是 <a href="http://man7.org/linux/man-pages/man2/flock.2.html" target="_blank" rel="noopener">flock</a>，另外一种则是 <a href="http://man7.org/linux/man-pages/man2/fcntl.2.html" target="_blank" rel="noopener">fcntl</a>，这两种锁的区别可以总结为下表：<br><a id="more"></a></p>
+<h1 id="文件锁类型"><a href="#文件锁类型" class="headerlink" title="文件锁类型"></a>文件锁类型</h1><p>Linux操作系统下，想要对一个文件加锁，一般有两种方式，一种是 <a href="http://man7.org/linux/man-pages/man2/flock.2.html" target="_blank" rel="noopener">flock</a>，另外一种则是 <a href="http://man7.org/linux/man-pages/man2/fcntl.2.html" target="_blank" rel="noopener">fcntl</a>，这两种锁的区别可以总结为下表：</p>
+<a id="more"></a>
+
 <table>
 <thead>
 <tr>
@@ -194,8 +196,7 @@ ga('send', 'pageview');
 <th>fcntl</th>
 </tr>
 </thead>
-<tbody>
-<tr>
+<tbody><tr>
 <td>锁力度</td>
 <td>整个文件</td>
 <td>记录</td>
@@ -210,16 +211,19 @@ ga('send', 'pageview');
 <td>FL_FLOCK BSD版本</td>
 <td>FL_POSIX POSIX版本</td>
 </tr>
-</tbody>
-</table>
+</tbody></table>
 <h1 id="文件锁解析"><a href="#文件锁解析" class="headerlink" title="文件锁解析"></a>文件锁解析</h1><p>下面先分布看一下 flock 和 fcntl 的几个实例</p>
 <h2 id="flock-vs-fcntl"><a href="#flock-vs-fcntl" class="headerlink" title="flock vs fcntl"></a>flock vs fcntl</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.cpp</span></span><br><span class="line"><span class="comment">// g++ -std=c++11 -o a.out a.cpp</span></span><br><span class="line"><span class="comment">// g++ -std=c++11 -o b.out -DLOCK a.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/file.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">now</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">time_t</span> current = time(<span class="number">0</span>);</span><br><span class="line">  <span class="keyword">struct</span> tm *timeinfo = <span class="built_in">std</span>::localtime(&amp;current);</span><br><span class="line">  <span class="keyword">char</span> buf[<span class="number">20</span>];</span><br><span class="line">  <span class="built_in">std</span>::strftime(buf, <span class="number">20</span>, <span class="string">"%Y-%m-%d %H:%M:%S"</span>, timeinfo);</span><br><span class="line">  <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">result</span><span class="params">(buf)</span></span>;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> fd = open(<span class="string">"a.txt"</span>, O_RDWR);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LOCK</span></span><br><span class="line">  <span class="keyword">int</span> lock = flock(fd, LOCK_EX);</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *lock_type = <span class="string">"flock"</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">  <span class="keyword">struct</span> flock lock_;</span><br><span class="line">  lock_.l_whence = SEEK_SET;</span><br><span class="line">  lock_.l_start = <span class="number">0</span>;</span><br><span class="line">  lock_.l_len = <span class="number">0</span>;</span><br><span class="line">  lock_.l_type = F_WRLCK;</span><br><span class="line">  <span class="keyword">int</span> lock = fcntl(fd, F_SETLKW, &amp;lock_);</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *lock_type = <span class="string">"fcntl"</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (lock == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; lock_type &lt;&lt; <span class="string">" lock a.txt success at "</span> &lt;&lt; now() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    sleep(<span class="number">10</span>);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; lock_type &lt;&lt; <span class="string">" successful exiting at "</span> &lt;&lt; now() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; lock_type &lt;&lt; <span class="string">" lock a.txt failure, errno: "</span> &lt;&lt; errno &lt;&lt; <span class="string">", reason: "</span> &lt;&lt; <span class="built_in">std</span>::strerror(errno) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>如果我们同时运行上面两个程序，结果会是什么呢？</p>
 </blockquote>
-<p>在编译之后将各个程序放到后台运行，会输出<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./a.out &amp;</span><br><span class="line">./b.out &amp;</span><br><span class="line">fcntl lock a.txt success at 2019-08-19 11:48:34</span><br><span class="line">flock lock a.txt success at 2019-08-19 11:48:34</span><br><span class="line">fcntl successful exiting at 2019-08-19 11:48:44</span><br><span class="line">flock successful exiting at 2019-08-19 11:48:44</span><br></pre></td></tr></table></figure></p>
+<p>在编译之后将各个程序放到后台运行，会输出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">./a.out &amp;</span><br><span class="line">./b.out &amp;</span><br><span class="line">fcntl lock a.txt success at 2019-08-19 11:48:34</span><br><span class="line">flock lock a.txt success at 2019-08-19 11:48:34</span><br><span class="line">fcntl successful exiting at 2019-08-19 11:48:44</span><br><span class="line">flock successful exiting at 2019-08-19 11:48:44</span><br></pre></td></tr></table></figure>
+
 <p>可以看到，<code>fcntl</code>和<code>flock</code>都会立刻获取到文件锁，<code>flock</code>并不需要等到<code>fcntl</code>退出后才能获取文件锁</p>
 <h2 id="flock-fcntl-on-fork"><a href="#flock-fcntl-on-fork" class="headerlink" title="flock/fcntl on fork"></a>flock/fcntl on fork</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// b.cpp</span></span><br><span class="line"><span class="comment">// g++ -std=c++11 -o c.out b.cpp</span></span><br><span class="line"><span class="comment">// g++ -std=c++11 -o c2.out b.cpp</span></span><br><span class="line"><span class="comment">// g++ -std=c++11 -o d.out -DLOCK b.cpp</span></span><br><span class="line"><span class="comment">// g++ -std=c++11 -o d2.out -DLOCK b.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;ctime&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sys/file.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">now</span><span class="params">()</span> </span>&#123;</span><br><span class="line">  <span class="keyword">time_t</span> current = time(<span class="number">0</span>);</span><br><span class="line">  <span class="keyword">struct</span> tm *timeinfo = <span class="built_in">std</span>::localtime(&amp;current);</span><br><span class="line">  <span class="keyword">char</span> buf[<span class="number">20</span>];</span><br><span class="line">  <span class="built_in">std</span>::strftime(buf, <span class="number">20</span>, <span class="string">"%Y-%m-%d %H:%M:%S"</span>, timeinfo);</span><br><span class="line">  <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">result</span><span class="params">(buf)</span></span>;</span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> **argv)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">int</span> fd = open(<span class="string">"a.txt"</span>, O_RDWR);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> LOCK</span></span><br><span class="line">  <span class="keyword">int</span> lock = flock(fd, LOCK_EX);</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *lock_type = <span class="string">"flock"</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">  <span class="keyword">struct</span> flock lock_;</span><br><span class="line">  lock_.l_whence = SEEK_SET;</span><br><span class="line">  lock_.l_start = <span class="number">0</span>;</span><br><span class="line">  lock_.l_len = <span class="number">0</span>;</span><br><span class="line">  lock_.l_type = F_WRLCK;</span><br><span class="line">  <span class="keyword">int</span> lock = fcntl(fd, F_SETLKW, &amp;lock_);</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> *lock_type = <span class="string">"fcntl"</span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (lock == <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"process "</span> &lt;&lt; argv[<span class="number">0</span>] &lt;&lt; <span class="string">": "</span> &lt;&lt; lock_type &lt;&lt; <span class="string">" lock a.txt success at "</span> &lt;&lt; now() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cerr</span> &lt;&lt; <span class="string">"process "</span> &lt;&lt; argv[<span class="number">0</span>] &lt;&lt; <span class="string">": "</span> &lt;&lt; lock_type &lt;&lt; <span class="string">" a.txt failure, errno: "</span> &lt;&lt; errno &lt;&lt; <span class="string">", reason: "</span> &lt;&lt; <span class="built_in">std</span>::strerror(errno) &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">exit</span>(errno);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">pid_t</span> pid = fork();</span><br><span class="line">  <span class="keyword">if</span> (pid == <span class="number">0</span>) &#123;</span><br><span class="line">    sleep(<span class="number">10</span>);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"process "</span> &lt;&lt; argv[<span class="number">0</span>] &lt;&lt; <span class="string">": child process exit at "</span> &lt;&lt; now() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    sleep(<span class="number">5</span>);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"process "</span> &lt;&lt; argv[<span class="number">0</span>] &lt;&lt; <span class="string">": parent process exit at "</span> &lt;&lt; now() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <blockquote>
 <p>如果我们运行同一种类型的锁的程序时，会是什么样子的呢</p>
 </blockquote>
@@ -227,11 +231,13 @@ ga('send', 'pageview');
 <li>同时运行<code>fcntl</code>时</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">./b10.out &amp;</span><br><span class="line">./b11.out &amp;</span><br><span class="line">sleep 60</span><br><span class="line">process ./b10.out: fcntl lock a.txt success at 2019-08-19 11:58:53</span><br><span class="line">process ./b10.out: parent process <span class="built_in">exit</span> at 2019-08-19 11:59:00</span><br><span class="line">process ./b11.out: fcntl lock a.txt success at 2019-08-19 11:59:00</span><br><span class="line">process ./b10.out: child process <span class="built_in">exit</span> at 2019-08-19 11:59:03</span><br><span class="line">process ./b11.out: parent process <span class="built_in">exit</span> at 2019-08-19 11:59:07</span><br><span class="line">process ./b11.out: child process <span class="built_in">exit</span> at 2019-08-19 11:59:10</span><br></pre></td></tr></table></figure>
+
 <p>可以看到 <code>fcntl</code> 在父进程退出之后，其余的进程就能够立刻获取到排它锁。</p>
 <ul>
 <li>同时运行<code>flock</code>时：</li>
 </ul>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">./b20.out &amp;</span><br><span class="line">./b21.out &amp;</span><br><span class="line">sleep 30</span><br><span class="line">process ./b20.out: flock lock a.txt success at 2019-08-19 11:59:51</span><br><span class="line">process ./b20.out: parent process <span class="built_in">exit</span> at 2019-08-19 11:59:58</span><br><span class="line">process ./b20.out: child process <span class="built_in">exit</span> at 2019-08-19 12:00:01</span><br><span class="line">process ./b21.out: flock lock a.txt success at 2019-08-19 12:00:01</span><br><span class="line">process ./b21.out: parent process <span class="built_in">exit</span> at 2019-08-19 12:00:08</span><br><span class="line">process ./b21.out: child process <span class="built_in">exit</span> at 2019-08-19 12:00:11</span><br></pre></td></tr></table></figure>
+
 <p>从上面的运行结果可以看到，<code>flock</code> 在父进程退出后，子进程会 <strong>继承父进程的锁</strong>。</p>
 <h1 id="原理解析"><a href="#原理解析" class="headerlink" title="原理解析"></a>原理解析</h1><p>上面可以看到，<code>fcntl</code>和<code>flock</code>表现出了完全不同的行为，那么为什么会出现这种情况呢，下面要从进程级文件描述符表、系统级打开文件表、系统级inode表说起。</p>
 <ul>
@@ -418,6 +424,10 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">VSM</a>
               </li>
              
@@ -438,10 +448,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
@@ -454,7 +460,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">linux</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -463,14 +481,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kafka</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -491,10 +501,6 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
             
             <div class="clearfix"></div>
