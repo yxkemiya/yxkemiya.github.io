@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://yxkemiya.github.io">
   <title>Kemiya的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -49,7 +49,7 @@ ga('send', 'pageview');
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -161,6 +161,72 @@ ga('send', 'pageview');
           </div>
           <div id="js-content" class="content-ll">
             
+  
+    <article id="post-file-lock" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/19/file-lock/">文件锁：解密 flock 和 fcntl 的区别</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/19/file-lock/" class="archive-article-date">
+  	<time datetime="2019-08-19T08:57:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>其实想些这篇博客已经很久了，这篇博客的内容其实来源于之前在<a href="https://www.weidian.com/" target="_blank" rel="noopener">微店</a>工作期间，公司内部做的技术分享中讲到的Linux同步机制，其中提到了Linux文件锁的内容，一直想找时间记录下来，但是一直都没有动笔，时隔三年之久之后，还是希望能够记录一下之前学到的内容，顺便复习一下。</p>
+<h1 id="文件锁类型"><a href="#文件锁类型" class="headerlink" title="文件锁类型"></a>文件锁类型</h1><p>Linux操作系统下，想要对一个文件加锁，一般有两种方式，一种是 <a href="http://man7.org/linux/man-pages/man2/flock.2.html" target="_blank" rel="noopener">flock</a>，另外一种则是 <a href="http://man7.org/linux/man-pages/man2/fcntl.2.html" target="_blank" rel="noopener">fcntl</a>，这两种锁的区别可以总结为下表：<br>
+        
+          <a class="article-more-a" href="/2019/08/19/file-lock/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/19/file-lock/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
   
     <article id="post-multiprocess-logging" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
@@ -337,13 +403,13 @@ ga('send', 'pageview');
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/02/27/thread-pool/">C++11线程池实现</a>
+      <a class="article-title" href="/2018/02/28/thread-pool/">C++11线程池实现</a>
     </h1>
   
 
         
-        <a href="/2018/02/27/thread-pool/" class="archive-article-date">
-  	<time datetime="2018-02-27T15:40:36.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-27</time>
+        <a href="/2018/02/28/thread-pool/" class="archive-article-date">
+  	<time datetime="2018-02-28T11:50:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-02-28</time>
 </a>
         
       </header>
@@ -360,7 +426,7 @@ ga('send', 'pageview');
 </ul>
 <h1 id="简单的代码实现"><a href="#简单的代码实现" class="headerlink" title="简单的代码实现"></a>简单的代码实现</h1><p>下面简单写一下线程池实现的代码，同时会在代码中加入一些注释，方便更好的理解线程池是如何实现的。</p>
         
-          <a class="article-more-a" href="/2018/02/27/thread-pool/#more">more >></a>
+          <a class="article-more-a" href="/2018/02/28/thread-pool/#more">more >></a>
         
       
 
@@ -384,7 +450,7 @@ ga('send', 'pageview');
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2018/02/27/thread-pool/">展开全文 >></a>
+          <a class="article-more-a" href="/2018/02/28/thread-pool/">展开全文 >></a>
         </p>
       
 
@@ -757,7 +823,7 @@ ga('send', 'pageview');
     <div class="article-entry" itemprop="articleBody">
       
         <p>在前面的几个博客中，我们谈到了许多的信息检索方法以及不同的Ranking方法，那么什么样的方法是最好的呢？为了回答这个问题，我们就需要对这些检索方法和Ranking方法进行比较，这就意味着我们需要来评估这些方法了。</p>
-<h2 id="为什么要进行评估"><a href="#为什么要进行评估" class="headerlink" title="为什么要进行评估"></a>为什么要进行评估</h2><p>前面我们已经给了一个理由，我们需要使用评估的方式来决定哪种检索方法是最好的，这对我们提升我们自己的知识非常重要，如果不评估的话，我们就不知道一个新的idea是否比老的更好。在<a href="">前面的博客</a>中我们谈到了文本检索的问题所在，并把文本检索与数据库检索进行了对比，我们认为文本检索是一个基于经验(Empirically defined)的问题，所以哪个检索系统能够有更好的表现就必须由用户来判断，也就是说检索系统的评估依赖于用户，这是一个非常有挑战的问题，因为：</p>
+<h2 id="为什么要进行评估"><a href="#为什么要进行评估" class="headerlink" title="为什么要进行评估"></a>为什么要进行评估</h2><p>前面我们已经给了一个理由，我们需要使用评估的方式来决定哪种检索方法是最好的，这对我们提升我们自己的知识非常重要，如果不评估的话，我们就不知道一个新的idea是否比老的更好。在<a href>前面的博客</a>中我们谈到了文本检索的问题所在，并把文本检索与数据库检索进行了对比，我们认为文本检索是一个基于经验(Empirically defined)的问题，所以哪个检索系统能够有更好的表现就必须由用户来判断，也就是说检索系统的评估依赖于用户，这是一个非常有挑战的问题，因为：</p>
 <ul>
 <li>如何让用户来对系统进行评估</li>
 <li>对不同的系统我们怎样做到公平的评估</li>
@@ -859,11 +925,11 @@ ga('send', 'pageview');
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Text Retrieval</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Search Engines</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Search Engines</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Text Retrieval</a>
         		</li>
       		
 		</ul>
@@ -874,112 +940,6 @@ ga('send', 'pageview');
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/06/08/coursera-TextRetrievalAndSearchEngines-week2-implement-TR/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-coursera-TextRetrievalAndSearchEngines-week2-2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/06/07/coursera-TextRetrievalAndSearchEngines-week2-2/">文本检索和搜索引擎(三) --向量空间模型(二)</a>
-    </h1>
-  
-
-        
-        <a href="/2016/06/07/coursera-TextRetrievalAndSearchEngines-week2-2/" class="archive-article-date">
-  	<time datetime="2016-06-07T06:21:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-06-07</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="简单VSM的改进"><a href="#简单VSM的改进" class="headerlink" title="简单VSM的改进"></a>简单VSM的改进</h2><p>　　从<a href="http://yxkemiya.github.io/2016/06/06/coursera-TextRetrievalAndSearchEngines-week2/">前面的简单版的VSM</a>计算结果来看，$f(q,d2),f(q,d3),f(q,d4)$有相同的值<code>3</code>，而这个结果不是我们期望看到的，因为</p>
-<ol>
-<li>从直觉上，我们认为$d4$比$d3$明显与$query$更相关，$d4$应该排在$d3$前面</li>
-<li>$d2$跟$query$并不相关</li>
-</ol>
-<p>这个问题就出在，函数$f(q, d)$并不能得到下面这些启发式的信息</p>
-<ol>
-<li>$d4$比$d3$匹配上了更多的<code>presidential</code>这个单词，所以$d4$应该排在$d3$前面</li>
-<li>直觉上我们认为匹配上<code>presidential</code>这个词比匹配<code>about</code>这个词更重要，因为<code>about</code>是一个非常常见的词，所以$f(q,d3)$应该远大于$f(q,d2)$</li>
-</ol>
-<p>即</p>
-<ol>
-<li>匹配<code>presidential</code>的次数越多，分应该越高</li>
-<li>匹配<code>presidential</code>应该比匹配<code>about</code>重要得多</li>
-</ol>
-        
-          <a class="article-more-a" href="/2016/06/07/coursera-TextRetrievalAndSearchEngines-week2-2/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">VSM</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Vector Space Model</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">TF</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">IDF</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">BM25</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/06/07/coursera-TextRetrievalAndSearchEngines-week2-2/">展开全文 >></a>
         </p>
       
 
@@ -1023,7 +983,7 @@ ga('send', 'pageview');
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 Kemiya
+    		&copy; 2019 Kemiya
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -1122,15 +1082,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
+                <a href="javascript:void(0)" class="js-tag color5">Search Engines</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Text Retrieval</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Search Engines</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1142,11 +1098,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+                <a href="javascript:void(0)" class="js-tag color3">TF</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">git</a>
+                <a href="javascript:void(0)" class="js-tag color4">IDF</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">BM25</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1154,7 +1122,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1174,7 +1146,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1182,23 +1154,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">TF</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">IDF</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">BM25</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
               </li>
             
             <div class="clearfix"></div>

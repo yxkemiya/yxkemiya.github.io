@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://yxkemiya.github.io">
   <title>文本检索和搜索引擎(一）--文本检索基础 | Kemiya的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="这篇博客以及后序的几个博客都来自来自Coursera上的文本检索和搜索引擎(Text Retrieval And Search Engines)课程。 这篇博客主要介绍一些基础的文本检索的内容。 文本检索和搜索引擎课程安排如下：">
-<meta name="keywords" content="Coursera,Text Retrieval,Search Engines">
+<meta name="keywords" content="Search Engines,Text Retrieval,Coursera">
 <meta property="og:type" content="article">
 <meta property="og:title" content="文本检索和搜索引擎(一）--文本检索基础">
 <meta property="og:url" content="https://yxkemiya.github.io/2016/06/05/coursera-TextRetrievalAndSearchEngines-week1/index.html">
@@ -57,7 +57,7 @@ ga('send', 'pageview');
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -279,7 +279,7 @@ ga('send', 'pageview');
 <h3 id="文本检索"><a href="#文本检索" class="headerlink" title="文本检索"></a>文本检索</h3><h4 id="一些表示方式"><a href="#一些表示方式" class="headerlink" title="一些表示方式"></a>一些表示方式</h4><ul>
 <li>词汇Vocabulary: $V = W_1, W_2, …, W_N$</li>
 <li>检索语句Query: $q = q_1,…,q_m$, 其中 $q_i \in V$</li>
-<li>文档Document: $d<em>i = d</em>{i1},…,d<em>{im</em>{j}}$，其中 $d_{ij} \in V$</li>
+<li>文档Document: $d_i = d_{i1},…,d_{im_{j}}$，其中 $d_{ij} \in V$</li>
 <li>集合Collection: $C = {d_i,…,d_M}$</li>
 <li>相关文档集合: $R(q) \subseteq C$<ul>
 <li>通常未知，并且依赖用户</li>
@@ -319,7 +319,7 @@ ga('send', 'pageview');
 <li>用户将顺序浏览搜索结果</li>
 </ul>
 <h4 id="如何设计Ranking函数"><a href="#如何设计Ranking函数" class="headerlink" title="如何设计Ranking函数"></a>如何设计Ranking函数</h4><ul>
-<li>对于Query: $q = q_1,…,q_m，其中q_i \in V$ 和 Document: $d<em>i = d</em>{i1},…,d<em>{im</em>{j}}$，其中 $d_{ij} \in V$</li>
+<li>对于Query: $q = q_1,…,q_m，其中q_i \in V$ 和 Document: $d_i = d_{i1},…,d_{im_{j}}$，其中 $d_{ij} \in V$</li>
 <li>Ranking Function: $f(q, d) \in \Re$</li>
 <li>一个好的Ranking函数应该把相关的文档排在不相关的文档前</li>
 <li>关键的挑战：怎样衡量文档 $d$ 跟query $q$的相关性</li>
@@ -377,7 +377,7 @@ ga('send', 'pageview');
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Coursera</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Search Engines</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
@@ -385,7 +385,7 @@ ga('send', 'pageview');
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Search Engines</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Coursera</a>
         		</li>
       		
 		</ul>
@@ -458,7 +458,7 @@ ga('send', 'pageview');
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 Kemiya
+    		&copy; 2019 Kemiya
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -557,15 +557,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
+                <a href="javascript:void(0)" class="js-tag color5">Search Engines</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Text Retrieval</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Search Engines</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -577,11 +573,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+                <a href="javascript:void(0)" class="js-tag color3">TF</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">git</a>
+                <a href="javascript:void(0)" class="js-tag color4">IDF</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">BM25</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -589,7 +597,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -609,7 +621,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -617,23 +629,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">TF</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">IDF</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">BM25</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
               </li>
             
             <div class="clearfix"></div>

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://yxkemiya.github.io">
   <title>文本检索和搜索引擎(五)--检索系统评估 | Kemiya的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -57,7 +57,7 @@ ga('send', 'pageview');
   
 
 </head>
-
+</html>
 <body>
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
@@ -189,7 +189,7 @@ ga('send', 'pageview');
     <div class="article-entry" itemprop="articleBody">
       
         <p>在前面的几个博客中，我们谈到了许多的信息检索方法以及不同的Ranking方法，那么什么样的方法是最好的呢？为了回答这个问题，我们就需要对这些检索方法和Ranking方法进行比较，这就意味着我们需要来评估这些方法了。</p>
-<h2 id="为什么要进行评估"><a href="#为什么要进行评估" class="headerlink" title="为什么要进行评估"></a>为什么要进行评估</h2><p>前面我们已经给了一个理由，我们需要使用评估的方式来决定哪种检索方法是最好的，这对我们提升我们自己的知识非常重要，如果不评估的话，我们就不知道一个新的idea是否比老的更好。在<a href="">前面的博客</a>中我们谈到了文本检索的问题所在，并把文本检索与数据库检索进行了对比，我们认为文本检索是一个基于经验(Empirically defined)的问题，所以哪个检索系统能够有更好的表现就必须由用户来判断，也就是说检索系统的评估依赖于用户，这是一个非常有挑战的问题，因为：</p>
+<h2 id="为什么要进行评估"><a href="#为什么要进行评估" class="headerlink" title="为什么要进行评估"></a>为什么要进行评估</h2><p>前面我们已经给了一个理由，我们需要使用评估的方式来决定哪种检索方法是最好的，这对我们提升我们自己的知识非常重要，如果不评估的话，我们就不知道一个新的idea是否比老的更好。在<a href>前面的博客</a>中我们谈到了文本检索的问题所在，并把文本检索与数据库检索进行了对比，我们认为文本检索是一个基于经验(Empirically defined)的问题，所以哪个检索系统能够有更好的表现就必须由用户来判断，也就是说检索系统的评估依赖于用户，这是一个非常有挑战的问题，因为：</p>
 <ul>
 <li>如何让用户来对系统进行评估</li>
 <li>对不同的系统我们怎样做到公平的评估</li>
@@ -236,7 +236,7 @@ ga('send', 'pageview');
 <li>这个方法论并不仅仅适用于搜索引擎的评估，同样适用于其他的基于经验的系统，例如NLP</li>
 </ul>
 <p><img src="/assets/coursera/TextRASE/Week3/test_collection_evaluation.png" alt="Test Collection Evaluation"></p>
-<p>　　上图表示适用测试集评估方式的大致过程，右边是相关性判断，然后系统A和系统B对于$Query=Q_1$分别给出了$R_A$和$R_B$两个结果，那么哪个结果更好呢？评估的标准是什么呢？<br>　　可能你会认为$R_A$更好，因为$R_A$一共给出了三个结果，其中两个都是相关的，$R_A$的结果更加准确；也有可能你认为$R_B$更好，因为$R_B$给出了更多的相关的结果！<br>　　从上面的分析可以看出，这个问题是与用户的任务密切相关的，你可以想象那些认为$R_A$更好的人，他们可能并不关心所有的相关性文档，那么在这种情况下，用户根本不需要去看所有的相关文档，他们只关心那些最相关的文档；你也可以想象哪些认为$R<em>B$更好的用户，这些用户可能需要尽可能多的文档，例如一个用户在做这个类目下的一个调查，那么他们就认为系统B更好。在这种情况下，我们就必须定义一个衡量的方法来评估这些系统，我们可能需要定义多个方法因为用户在看待结果的时候的观点是不同的！<br>　　对上图的例子中，我们假设 </em>相关文档的个数是10_ ，那么我们就有</p>
+<p>　　上图表示适用测试集评估方式的大致过程，右边是相关性判断，然后系统A和系统B对于$Query=Q_1$分别给出了$R_A$和$R_B$两个结果，那么哪个结果更好呢？评估的标准是什么呢？<br>　　可能你会认为$R_A$更好，因为$R_A$一共给出了三个结果，其中两个都是相关的，$R_A$的结果更加准确；也有可能你认为$R_B$更好，因为$R_B$给出了更多的相关的结果！<br>　　从上面的分析可以看出，这个问题是与用户的任务密切相关的，你可以想象那些认为$R_A$更好的人，他们可能并不关心所有的相关性文档，那么在这种情况下，用户根本不需要去看所有的相关文档，他们只关心那些最相关的文档；你也可以想象哪些认为$R_B$更好的用户，这些用户可能需要尽可能多的文档，例如一个用户在做这个类目下的一个调查，那么他们就认为系统B更好。在这种情况下，我们就必须定义一个衡量的方法来评估这些系统，我们可能需要定义多个方法因为用户在看待结果的时候的观点是不同的！<br>　　对上图的例子中，我们假设 <em>相关文档的个数是10</em> ，那么我们就有</p>
 <table>
 <thead>
 <tr>
@@ -289,7 +289,7 @@ ga('send', 'pageview');
 <p>那么准确率的定义是<br>$$Precision = \frac{a}{a+c}$$<br>召回率的定义是<br>$$Recall = \frac{a}{a+b}$$</p>
 <p><strong>理想情况下，我们希望准确率和召回率有 $Precision = Recall = 1.0$，但是实际上高的召回率通常意味着较低的准确率！</strong></p>
 <p>我们还有另外一个值–<code>F值(F-Measure)</code>来进行衡量，F值的定义是<br>$$F_{\beta}=\frac{1}{\frac{\beta^2}{\beta^2 + 1} \frac{1}{R} + \frac{1}{\beta^2+1} \frac{1}{P}} = \frac{(\beta^2+1)PR}{\beta^2 P + R}$$，其中$P$为准确率，$R$为召回率，$\beta$是一个参数，且通常被设置为1，那么就有$F_1$:<br>$$F_1=\frac{2PR}{P+R}$$</p>
-<p>从$F<em>\beta$的表达式可以看出，$F</em>\beta$对$P$和$R$分别都是单调递增函数，即随着$P$(或$R$)的增大，$F<em>\beta$也会随着增大，而前面我们说到，一个模型如果有高的召回率，那么准确率就会比较低，所以这里$F</em>\beta$就是准确和召回的一个权衡。</p>
+<p>从$F_\beta$的表达式可以看出，$F_\beta$对$P$和$R$分别都是单调递增函数，即随着$P$(或$R$)的增大，$F_\beta$也会随着增大，而前面我们说到，一个模型如果有高的召回率，那么准确率就会比较低，所以这里$F_\beta$就是准确和召回的一个权衡。</p>
 <p>那么我们为什么不用$0.5*P + 0.5*R$来衡量一个算法呢？它的效果为什么没有$F_1$好呢？或者说这种方式到底有什么问题呢？原因就出在<strong>如果计算算法平均值，而算法平均值都是用的和来计算的，那么算法平均值的结果就会被一个非常大的值所左右，而几乎不用考虑其余小的值的影响！</strong>但是调和平均数$F_1$就不会出现这种情况了！</p>
 <h4 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h4><ul>
 <li>准确率：检索的结果是否都是相关的</li>
@@ -573,7 +573,7 @@ ga('send', 'pageview');
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 Kemiya
+    		&copy; 2019 Kemiya
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -672,15 +672,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
+                <a href="javascript:void(0)" class="js-tag color5">Search Engines</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Text Retrieval</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Search Engines</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -692,11 +688,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+                <a href="javascript:void(0)" class="js-tag color3">TF</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">git</a>
+                <a href="javascript:void(0)" class="js-tag color4">IDF</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">BM25</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -704,7 +712,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
+                <a href="javascript:void(0)" class="js-tag color5">hexo</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -724,7 +736,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -732,23 +744,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">TF</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">IDF</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">BM25</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
               </li>
             
             <div class="clearfix"></div>
