@@ -9,7 +9,7 @@
   <title>文本检索和搜索引擎(四) --文本检索实现 | Kemiya的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="文本检索实现前面我们讲到了VSM模型，接下来我们说一说搜索引擎中文本检索方式的简单实现！ 搜索引擎在实现的时候主要有两个比较大的挑战  存储大容量的数据 能够快速对一个query进行相应，同时能够服务多个query的并行查询  下图是一个典型的文本检索系统(Text Retrieval System)的系统架构">
-<meta name="keywords" content="Search Engines,Text Retrieval">
+<meta name="keywords" content="Text Retrieval,Search Engines">
 <meta property="og:type" content="article">
 <meta property="og:title" content="文本检索和搜索引擎(四) --文本检索实现">
 <meta property="og:url" content="https://yxkemiya.github.io/2016/06/08/coursera-TextRetrievalAndSearchEngines-week2-implement-TR/index.html">
@@ -515,11 +515,11 @@ ga('send', 'pageview');
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Search Engines</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Text Retrieval</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Text Retrieval</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Search Engines</a>
         		</li>
       		
 		</ul>
@@ -687,18 +687,6 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Search Engines</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Text Retrieval</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">VSM</a>
               </li>
              
@@ -719,15 +707,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
+                <a href="javascript:void(0)" class="js-tag color5">Text Retrieval</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+                <a href="javascript:void(0)" class="js-tag color5">Search Engines</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -736,6 +732,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -755,19 +755,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
             
             <div class="clearfix"></div>

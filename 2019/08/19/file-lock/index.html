@@ -9,6 +9,7 @@
   <title>文件锁：解密 flock 和 fcntl 的区别 | Kemiya的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="背景其实想些这篇博客已经很久了，这篇博客的内容其实来源于之前在微店工作期间，公司内部做的技术分享中讲到的Linux同步机制，其中提到了Linux文件锁的内容，一直想找时间记录下来，但是一直都没有动笔，时隔三年之久之后，还是希望能够记录一下之前学到的内容，顺便复习一下。 文件锁类型Linux操作系统下，想要对一个文件加锁，一般有两种方式，一种是 flock，另外一种则是 fcntl，这两种锁的区别">
+<meta name="keywords" content="linux">
 <meta property="og:type" content="article">
 <meta property="og:title" content="文件锁：解密 flock 和 fcntl 的区别">
 <meta property="og:url" content="https://yxkemiya.github.io/2019/08/19/file-lock/index.html">
@@ -16,7 +17,7 @@
 <meta property="og:description" content="背景其实想些这篇博客已经很久了，这篇博客的内容其实来源于之前在微店工作期间，公司内部做的技术分享中讲到的Linux同步机制，其中提到了Linux文件锁的内容，一直想找时间记录下来，但是一直都没有动笔，时隔三年之久之后，还是希望能够记录一下之前学到的内容，顺便复习一下。 文件锁类型Linux操作系统下，想要对一个文件加锁，一般有两种方式，一种是 flock，另外一种则是 fcntl，这两种锁的区别">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://yxkemiya.github.io/assets/linux/open-file.jpg">
-<meta property="og:updated_time" content="2019-08-19T08:57:54.085Z">
+<meta property="og:updated_time" content="2019-08-19T08:59:09.880Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="文件锁：解密 flock 和 fcntl 的区别">
 <meta name="twitter:description" content="背景其实想些这篇博客已经很久了，这篇博客的内容其实来源于之前在微店工作期间，公司内部做的技术分享中讲到的Linux同步机制，其中提到了Linux文件锁的内容，一直想找时间记录下来，但是一直都没有动笔，时隔三年之久之后，还是希望能够记录一下之前学到的内容，顺便复习一下。 文件锁类型Linux操作系统下，想要对一个文件加锁，一般有两种方式，一种是 flock，另外一种则是 fcntl，这两种锁的区别">
@@ -253,6 +254,17 @@ ga('send', 'pageview');
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">linux</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -406,18 +418,6 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Search Engines</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Text Retrieval</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">VSM</a>
               </li>
              
@@ -438,15 +438,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Golang</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Coursera</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
+                <a href="javascript:void(0)" class="js-tag color5">Text Retrieval</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
+                <a href="javascript:void(0)" class="js-tag color5">Search Engines</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">linux</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -455,6 +463,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">git</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Text Retrieval Evaluation</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -474,19 +486,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">linux</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">others</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">statistical language models</a>
               </li>
             
             <div class="clearfix"></div>
